@@ -22,7 +22,6 @@ const ReportPage = ({ student }: ReportProps) => {
 
   return (
     <>
-    <h1 className="bg-red-500">12</h1>
     <ReportCardTemplate student={student} />
     </>
   );
