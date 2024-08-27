@@ -9,11 +9,11 @@ import path from 'path';
 async function generatePDF(studentId: StudentData): Promise<Buffer> {
 
     const browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     const page = await browser.newPage();
-    const url = `http://localhost:3000/report/${studentId}`; // URL com slug
+    const url = `http://localhost:3000/report/${studentId}`;
 
     await page.goto(url, { waitUntil: 'networkidle2' });
 

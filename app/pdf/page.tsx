@@ -11,12 +11,9 @@ async function loadData() {
 }
 
 export default async function PDF() {
-  const data = await loadData() as JSON[];
-  const extractedData = extractData(data);
-  const student: StudentData = extractedData[4];
   return (
     <>
-      <PDFViewer studentId={'4'}/>
+      <PDFViewer studentId={'7'}/>
   
     </>
   );
