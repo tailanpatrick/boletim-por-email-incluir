@@ -2,17 +2,11 @@ import { GetServerSideProps } from 'next';
 import StudentData from '@/types/StudentData';
 import ReportCardTemplate from '@/template/ReportCardTemplate';
 import extractData from '@/utils/extractData';
-import xlsxToJson from '@/utils/xlsxToJson';
 import '@/app/globals.css';
+import loadData from '@/utils/loadData';
 
 interface ReportProps {
   student: StudentData | null;
-}
-
-async function loadData() {
-  const filePath = "public/Eletronica - 2 semestre.xlsx";
-  const data = await xlsxToJson(filePath);
-  return data;
 }
 
 const ReportPage = ({ student }: ReportProps) => {
