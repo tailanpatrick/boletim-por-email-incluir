@@ -1,10 +1,5 @@
 import puppeteer from 'puppeteer';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
-import ReportCardTemplate from '@/template/ReportCardTemplate';
-import StudentData from '@/types/StudentData';
-import fs from 'fs';
-import path from 'path';
+
 
 async function generatePDF(studentId: string): Promise<Buffer> {
 
@@ -19,7 +14,7 @@ async function generatePDF(studentId: string): Promise<Buffer> {
 
     const pdfBuffer = await page.pdf({ 
         printBackground: true,
-        format: 'A4'
+        format: 'A4',
     });
     
 
