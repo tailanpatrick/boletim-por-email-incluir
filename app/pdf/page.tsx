@@ -1,7 +1,5 @@
 import xlsxToJson from "@/utils/xlsxToJson";
-import extractData from "@/utils/extractData";
 import PDFViewer from "@/components/PDFViewer";
-import StudentData  from '@/types/StudentData';
 
 async function loadData() {
 

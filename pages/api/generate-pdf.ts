@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import generatePDF from '@/utils/generatePDF';
-import StudentData from '@/types/StudentData';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
