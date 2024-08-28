@@ -6,13 +6,19 @@ function extractData(json: any[]): StudentData[] {
     // Identificar o total de aulas
     const firstRecord = json[3] || {};
     const totalClasses = Object.keys(firstRecord)
-        .filter(key => key.startsWith('__EMPTY_') && !isNaN(Number(key.split('_')[1])) && Number(key.split('_')[1]) <= 12)
-        .length - 1 ;
+        .filter(key => key.startsWith('__EMPTY') && !isNaN(Number(key.split('_')[1])) && Number(key.split('_')[1]) <= 12)
+        .length - 1;
 
     return json.map((student, index) => {
-        const name = student.__EMPTY;
+        console.log(student);
 
-        if(!name){
+        const courseAndSemester = Object.keys(student)[0]; 
+        const course = courseAndSemester.split('-')[0] 
+        const semester = courseAndSemester.split('-')[1] 
+        
+        const name = student[courseAndSemester]; 
+
+        if (!name) {
             return null;
         }
 
@@ -22,9 +28,15 @@ function extractData(json: any[]): StudentData[] {
         let totalPoints = 0;
         let totalAttendance = 0;
         let percentPresence = 0;
+        
 
-        for (let i = 1; i <= totalClasses; i++) {
-            const attendanceStatus = student[`__EMPTY_${i}`];
+        for (let i = 0; i < totalClasses; i++) {
+            let attendanceStatus = student[`__EMPTY_${i}`];
+
+            if(i==0){
+                attendanceStatus = student[`__EMPTY`];
+            }
+            
             const isPresent = attendanceStatus === 'P';
 
             if (isPresent) {
@@ -35,7 +47,7 @@ function extractData(json: any[]): StudentData[] {
 
         percentPresence = (totalAttendance / totalClasses) * 100;
 
-        for (let i = 14; i <= 18; i++) {
+        for (let i = 13; i <= 17; i++) {
             totalPoints += Number(student[`__EMPTY_${i}`]);
         }
 
@@ -43,6 +55,8 @@ function extractData(json: any[]): StudentData[] {
         return {
             id: index.toString(),
             name: name || '',
+            course: course,
+            semester: semester,
             presence: presence,
             percentPresence: percentPresence.toFixed(2) || 0,
             totalPoints: totalPoints || 0,

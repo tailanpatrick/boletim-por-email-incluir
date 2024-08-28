@@ -23,8 +23,8 @@ const ReportCardTemplate: React.FC<{ student: StudentDataProps }> = ({ student }
 
             <div className="mb-6">
                 <p className="text-lg"><strong>Nome do Aluno:</strong> {student.name}</p>
-                <p className="text-lg"><strong>Curso:</strong> Nada</p>
-                <p className="text-lg"><strong>Semestre Letivo:</strong> Nada</p>
+                <p className="text-lg"><strong>Curso:</strong> {student.course}</p>
+                <p className="text-lg"><strong>Semestre Letivo:</strong> {student.semester}</p>
             </div>
 
             <div className="mb-6">
@@ -53,7 +53,7 @@ const ReportCardTemplate: React.FC<{ student: StudentDataProps }> = ({ student }
                     <div className="min-w-full p-2 border-b">
                         <span className="block bg-black text-white text-sm font-medium p-2">Curso</span>
                         <span className="block bg-gray-100 text-gray-700 px-2 font-semibold py-1">
-                            NAda
+                            {student.course}
                         </span>
                     </div>
                     <div className="min-w-[50%] p-2 border-b">

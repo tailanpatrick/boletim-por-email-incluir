@@ -11,7 +11,7 @@ async function loadData() {
 export default async function PDF() {
   return (
     <>
-      <PDFViewer studentId={'4'}/>
+      <PDFViewer studentId={'7'}/>
   
     </>
   );

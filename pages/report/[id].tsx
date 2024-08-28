@@ -35,11 +35,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const data = await loadData();
   const students = extractData(data);
 
-
-  console.log('ID solicitado:', id);
-  console.log('Alunos:', students);
-
-
   const student = students.find(student => student.id === id && student.name) || null;
 
   return {
