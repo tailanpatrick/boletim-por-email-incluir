@@ -4,7 +4,7 @@ import path from 'path';
 export default async function persistStudantsInJson(jsonData: any, filename: string) {
   try {
     // Define o caminho da pasta onde o arquivo JSON será salvo
-    const folderPath = path.resolve(__dirname, 'data');
+    const folderPath = path.resolve(process.cwd(), 'data');
 
     console.log(folderPath);
 

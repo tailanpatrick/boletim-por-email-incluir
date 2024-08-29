@@ -10,13 +10,14 @@ function extractData(json: any[]): StudentData[] {
         .length - 1;
 
     return json.map((student, index) => {
-
         const courseAndSemester = Object.keys(student)[0]; 
         const course = courseAndSemester.split('-')[0] 
         const semester = courseAndSemester.split('-')[1] 
         
         const name = student[courseAndSemester]; 
 
+        const email = student.__EMPTY_21;
+        
         if (!name) {
             return null;
         }
@@ -61,6 +62,7 @@ function extractData(json: any[]): StudentData[] {
             totalPoints: totalPoints || 0,
             average: passingAverage, // Média fixa para aprovação
             status: totalPoints >= passingAverage ? 'Aprovado' : 'Reprovado',
+            email:email,
         };
     }).slice(4) as StudentData[];
 }

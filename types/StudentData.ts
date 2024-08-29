@@ -9,5 +9,6 @@ export default interface StudentData {
     maxPoints: number;
     average: number; // Média fixa de aprovação
     status: string;
+    email: string;
 }
 
