@@ -2,8 +2,8 @@ import { GetServerSideProps } from 'next';
 import StudentData from '@/types/StudentData';
 import ReportCardTemplate from '@/template/ReportCardTemplate';
 import extractData from '@/utils/extractData';
+import loadData  from '@/utils/loadData';
 import '@/app/globals.css';
-import loadData from '@/utils/loadData';
 
 interface ReportProps {
   student: StudentData | null;
@@ -24,8 +24,7 @@ const ReportPage = ({ student }: ReportProps) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.params as { id: string };
-
- 
+  
   const data = await loadData();
   const students = extractData(data);
 

@@ -1,5 +1,6 @@
 import xlsxToJson from "@/utils/xlsxToJson";
 import PDFViewer from "@/components/PDFViewer";
+import GeneratePDFs from "@/components/GeneratePDFs";
 
 async function loadData() {
 
@@ -10,9 +11,9 @@ async function loadData() {
 
 export default async function PDF() {
   return (
-    <>
-      <PDFViewer studentId={'7'}/>
-  
-    </>
+    <div className="flex flex-col gap-3">
+      <PDFViewer studentId={'4'}/>
+      <GeneratePDFs/>
+    </div>
   );
 }

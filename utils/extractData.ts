@@ -10,7 +10,6 @@ function extractData(json: any[]): StudentData[] {
         .length - 1;
 
     return json.map((student, index) => {
-        console.log(student);
 
         const courseAndSemester = Object.keys(student)[0]; 
         const course = courseAndSemester.split('-')[0] 
