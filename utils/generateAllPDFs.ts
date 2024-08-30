@@ -5,8 +5,8 @@ import  extractData  from '@/utils/extractData';
 import persistStudantsInJson from '@/utils/persistStudantsInJson';
 import savePDF from './savePDF';
 
-export default async function generateAllPDFs(){
-    const data = await loadData();
+export default async function generateAllPDFs(xlsxFileBuffer: Buffer){
+    const data = await loadData(xlsxFileBuffer);
     const students = extractData(data);
     await persistStudantsInJson(students, 'temp.json');
 

@@ -1,16 +1,9 @@
 import * as XLSX from "xlsx";
-import path from "path";
-import fs from "fs/promises";
 
-async function xlsxToJson(filePath: string): Promise<any[]> {
-  // Resolve o caminho absoluto do arquivo
-  const fullPath = path.resolve(filePath);
+async function xlsxToJson(xlsxFileBuffer: Buffer): Promise<any[]> {
 
-  // Lê o arquivo como buffer
-  const fileBuffer = await fs.readFile(fullPath);
 
-  // Lê o buffer usando xlsx
-  const workbook = XLSX.read(fileBuffer);
+  const workbook = XLSX.read(xlsxFileBuffer, {type: 'buffer'});
   const sheetName = workbook.SheetNames[0];
   const sheet = workbook.Sheets[sheetName];
 

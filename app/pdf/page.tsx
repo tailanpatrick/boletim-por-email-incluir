@@ -1,19 +1,51 @@
-import xlsxToJson from "@/utils/xlsxToJson";
+"use client";
+import { useState } from "react";
 import PDFViewer from "@/components/PDFViewer";
 import GeneratePDFs from "@/components/GeneratePDFs";
+import FileUpload from "@/components/ui/FileUpload";
 
-async function loadData() {
+export default function PDF() {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const filePath = "public/Eletronica - 2 semestre.xlsx";
-  const data = await xlsxToJson(filePath);
-  return data;
-}
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-export default async function PDF() {
+    if (!selectedFile) {
+      alert("Por favor, selecione um arquivo.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    try {
+      const response = await fetch("/api/generate-all-pdfs", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        alert("Boletins gerados e enviados com sucesso!");
+      } else {
+        alert("Erro ao gerar ou enviar boletins.");
+      }
+    } catch (error) {
+      console.error("Erro ao enviar o formulário:", error);
+      alert("Erro ao enviar o formulário.");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-3">
-      <PDFViewer studentId={'4'}/>
-      <GeneratePDFs/>
+      <PDFViewer studentId={'4'} />
+      <GeneratePDFs />
+
+      <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
+        <FileUpload onFileUpload={setSelectedFile} /> {/* Alterado para 'onFileUpload' */}
+        <button type="submit" className="bg-white flex-1">
+          Gerar e Enviar Boletins
+        </button>
+      </form>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import xlsxToJson from "./xlsxToJson";
 
-export default async function loadData() {
-    const filePath = "public/Eletronica - 2 semestre.xlsx";
-    const data = await xlsxToJson(filePath);
+export default async function loadData(xlsxFileBuffer: Buffer) {
+    
+    const data = await xlsxToJson(xlsxFileBuffer);
     return data;
 }
