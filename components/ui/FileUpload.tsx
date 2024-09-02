@@ -13,7 +13,7 @@ export const FileUpload = ({
   onFileUpload,
   acceptedTypes = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   buttonLabel = "Reset",
-  dropzoneText = "Click to upload or drag and drop",
+  dropzoneText = "Clique ou arraste para enviar",
 }: FileUploadProps) => {
   const [fileName, setFileName] = useState<string | null>(null);
   const [fileEnter, setFileEnter] = useState(false);
