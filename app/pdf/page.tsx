@@ -36,14 +36,14 @@ export default function PDF() {
   };
 
   return (
-    <div className="flex flex-col gap-3">
-      <PDFViewer studentId={'4'} />
-      <GeneratePDFs />
+    <div className="flex flex-col gap-3 p-20">
+      {/* <PDFViewer studentId={'4'} />
+      <GeneratePDFs /> */}
 
       <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
-        <FileUpload onFileUpload={setSelectedFile} /> {/* Alterado para 'onFileUpload' */}
-        <button type="submit" className="bg-white flex-1">
-          Gerar e Enviar Boletins
+        <FileUpload onFileUpload={setSelectedFile} />
+        <button type="submit" className="bg-white flex-1 p-4 rounded-md">
+          Gerar Boletins
         </button>
       </form>
     </div>
