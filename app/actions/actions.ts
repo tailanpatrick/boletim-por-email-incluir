@@ -5,7 +5,7 @@ const { MailtrapTransport } = require("mailtrap");
 
 export async function sendEmail(formData: FormData) {
   "use server";
-  const TOKEN = "2b904e0d376c23ecc4af10ddad237f5a";
+  const TOKEN = process.env.TEST_TOKEN;
   const transport = Nodemailer.createTransport(
     MailtrapTransport({
       token: TOKEN,

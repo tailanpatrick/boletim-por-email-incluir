@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 const Nodemailer = require("nodemailer");
 const { MailtrapTransport } = require("mailtrap");
 
-const TOKEN = "2b904e0d376c23ecc4af10ddad237f5a";
+const TOKEN = process.env.TEST_TOKEN;
 
 const transport = Nodemailer.createTransport(
   MailtrapTransport({
