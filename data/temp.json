@@ -18,7 +18,7 @@
       "P",
       "P"
     ],
-    "percentPresence": "100.00",
+    "percentPresence": 100,
     "totalPoints": 88,
     "average": 180,
     "status": "Reprovado",
@@ -43,7 +43,7 @@
       "P",
       "P"
     ],
-    "percentPresence": "91.67",
+    "percentPresence": 91.66666666666666,
     "totalPoints": 268,
     "average": 180,
     "status": "Aprovado",
@@ -68,7 +68,7 @@
       "P",
       "P"
     ],
-    "percentPresence": "91.67",
+    "percentPresence": 91.66666666666666,
     "totalPoints": 268,
     "average": 180,
     "status": "Aprovado",
@@ -93,7 +93,7 @@
       "P",
       "P"
     ],
-    "percentPresence": "83.33",
+    "percentPresence": 83.33333333333334,
     "totalPoints": 268,
     "average": 180,
     "status": "Aprovado",
@@ -118,7 +118,7 @@
       "P",
       "P"
     ],
-    "percentPresence": "83.33",
+    "percentPresence": 83.33333333333334,
     "totalPoints": 268,
     "average": 180,
     "status": "Aprovado",
@@ -143,7 +143,7 @@
       "P",
       "P"
     ],
-    "percentPresence": "83.33",
+    "percentPresence": 83.33333333333334,
     "totalPoints": 268,
     "average": 180,
     "status": "Aprovado",
@@ -168,7 +168,7 @@
       "P",
       "P"
     ],
-    "percentPresence": "83.33",
+    "percentPresence": 83.33333333333334,
     "totalPoints": 268,
     "average": 180,
     "status": "Aprovado",
@@ -193,7 +193,7 @@
       "P",
       "P"
     ],
-    "percentPresence": "83.33",
+    "percentPresence": 83.33333333333334,
     "totalPoints": 168,
     "average": 180,
     "status": "Reprovado",

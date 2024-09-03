@@ -58,7 +58,7 @@ function extractData(json: any[]): StudentData[] {
             course: course,
             semester: semester,
             presence: presence,
-            percentPresence: percentPresence.toFixed(2) || 0,
+            percentPresence: Number(percentPresence) || 0,
             totalPoints: totalPoints || 0,
             average: passingAverage, // Média fixa para aprovação
             status: totalPoints >= passingAverage ? 'Aprovado' : 'Reprovado',

@@ -6,9 +6,9 @@ export default interface StudentData {
     presence: string[];
     percentPresence: number;
     totalPoints: number;
-    maxPoints: number;
     average: number; // Média fixa de aprovação
     status: string;
     email: string;
+    reportCard: Blob;
 }
 

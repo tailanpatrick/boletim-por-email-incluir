@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import upload from '@/lib/multer'; // Importa a configuração do multer
-import generateAllPDFs from '@/utils/generateAllPDFs';
+import { generateAndSentAllPDFs } from '@/utils/generate-pdfs/generateAndSentAllPDFs';
 import NextApiRequestWithFile from '@/types/NextApiRequestWithFIle';
 
 // Configura o Next.js para não usar o analisador de corpo padrão
@@ -26,7 +26,7 @@ export default function handler(req: NextApiRequestWithFile, res: NextApiRespons
 
     try {
       // Chama a função generateAllPDFs, passando o buffer do arquivo
-      await generateAllPDFs(fileBuffer);
+      await generateAndSentAllPDFs(fileBuffer);
 
       res.status(200).send('ok');
     } catch (error) {
