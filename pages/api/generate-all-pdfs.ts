@@ -1,7 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiResponse } from 'next';
+import NextApiRequestWithFile from '@/types/NextApiRequestWithFIle';
 import upload from '@/lib/multer'; // Importa a configuração do multer
 import { generateAndSentAllPDFs } from '@/utils/generate-pdfs/generateAndSentAllPDFs';
-import NextApiRequestWithFile from '@/types/NextApiRequestWithFIle';
 
 // Configura o Next.js para não usar o analisador de corpo padrão
 export const config = {
