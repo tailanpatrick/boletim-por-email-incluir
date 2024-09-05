@@ -1,8 +1,8 @@
 // src/template/ReportCardTemplate.tsx
 import Image from "next/image";
-import StudentDataProps  from './../types/StudentData';
+import StudentData  from '@/types/StudentData';
 
-const ReportCardTemplate: React.FC<{ student: StudentDataProps }> = ({ student }) => {
+const ReportCardTemplate: React.FC<{ student: StudentData }> = ({ student }) => {
     return (
         <div className="max-w-[400px] mx-auto p-8 bg-white shadow-lg my-5 rounded-lg">
             <div className="flex items-center justify-start gap-3 border-b pb-4 mb-6">
@@ -30,7 +30,7 @@ const ReportCardTemplate: React.FC<{ student: StudentDataProps }> = ({ student }
             <div className="mb-6">
                 <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">Frequência do Aluno</h2>
                 <div className="flex flex-wrap gap-2">
-                    {student.presence.map((entry, index) => (
+                    {student.presence.map((entry: string, index: number) => (
                         <div key={index} className="flex-1 min-w-[80px] bg-gray-100 text-center">
                             <span className="block bg-black text-white text-sm font-medium p-2">{index + 1}</span>
                             <span className={`block ${entry === 'P' ? 'text-gray-700' : 'text-red-700'} px-2 py-1`}>
@@ -41,7 +41,7 @@ const ReportCardTemplate: React.FC<{ student: StudentDataProps }> = ({ student }
                     <div className="flex-1 min-w-[80px] bg-gray-200 text-center font-semibold">
                         <span className="block bg-black text-white text-sm font-medium p-2">Presença Total (%)</span>
                         <span className="block text-gray-700 px-2 py-1">
-                            {student.percentPresence} %
+                            {student.percentPresence.toFixed(2)} %
                         </span>
                     </div>
                 </div>
