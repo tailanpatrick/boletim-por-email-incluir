@@ -26,7 +26,7 @@ export default function handler(req: NextApiRequestWithFile, res: NextApiRespons
 
     try {
       // Chama a função generateAllPDFs, passando o buffer do arquivo
-      await generateAndSentAllPDFs(fileBuffer);
+      await generateAndSentAllPDFs(fileBuffer); 
 
       res.status(200).send('ok');
     } catch (error) {

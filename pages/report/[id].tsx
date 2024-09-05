@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import StudentData from '@/types/StudentData';
-import ReportCardTemplate from '@/template/ReportCardTemplate';
+import ReportCardTemplate from '@/components/template/ReportCardTemplate';
 import readJson from '@/utils/generate-pdfs/readJson';
 import path from 'path';
 import '@/app/globals.css';
