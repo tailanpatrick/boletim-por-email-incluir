@@ -20,8 +20,8 @@
     ],
     "percentPresence": 100,
     "totalPoints": 88,
-    "average": 180,
-    "status": "Reprovado",
+    "average": 60,
+    "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
   {
@@ -45,7 +45,7 @@
     ],
     "percentPresence": 91.66666666666666,
     "totalPoints": 268,
-    "average": 180,
+    "average": 60,
     "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
@@ -70,7 +70,7 @@
     ],
     "percentPresence": 91.66666666666666,
     "totalPoints": 268,
-    "average": 180,
+    "average": 60,
     "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
@@ -95,7 +95,7 @@
     ],
     "percentPresence": 83.33333333333334,
     "totalPoints": 268,
-    "average": 180,
+    "average": 60,
     "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
@@ -120,7 +120,7 @@
     ],
     "percentPresence": 83.33333333333334,
     "totalPoints": 268,
-    "average": 180,
+    "average": 60,
     "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
@@ -145,7 +145,7 @@
     ],
     "percentPresence": 83.33333333333334,
     "totalPoints": 268,
-    "average": 180,
+    "average": 60,
     "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
@@ -170,7 +170,7 @@
     ],
     "percentPresence": 83.33333333333334,
     "totalPoints": 268,
-    "average": 180,
+    "average": 60,
     "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
@@ -195,11 +195,35 @@
     ],
     "percentPresence": 83.33333333333334,
     "totalPoints": 168,
-    "average": 180,
-    "status": "Reprovado",
+    "average": 60,
+    "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
-  null,
+  {
+    "id": "12",
+    "name": "teste",
+    "course": "Eletrônica ",
+    "semester": " 1 Semestre",
+    "presence": [
+      "P",
+      "P",
+      "P",
+      "P",
+      "P",
+      "P",
+      "P",
+      "P",
+      "F",
+      "F",
+      "P",
+      "P"
+    ],
+    "percentPresence": 83.33333333333334,
+    "totalPoints": 168,
+    "average": 60,
+    "status": "Aprovado",
+    "email": "tailan06@hotmail.com"
+  },
   null,
   null,
   null,

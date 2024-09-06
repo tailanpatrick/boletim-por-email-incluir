@@ -24,14 +24,17 @@ export default function PDF() {
         body: formData,
       });
 
-      if (response.ok) {
-        alert("Boletins gerados e enviados com sucesso!");
-      } else {
-        alert("Erro ao gerar ou enviar boletins.");
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        alert(`Erro: ${errorResponse.error || 'Ocorreu um erro desconhecido'}`);
+        return;
       }
-    } catch (error) {
-      console.error("Erro ao enviar o formulário:", error);
-      alert("Erro ao enviar o formulário.");
+
+      alert("Boletins gerados e enviados com sucesso!");
+    } catch (error: any) {
+      
+      alert(`Erro de rede: ${error.message as string}`);
     }
   };
 

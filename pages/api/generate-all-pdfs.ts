@@ -1,9 +1,8 @@
 import type { NextApiResponse } from 'next';
 import NextApiRequestWithFile from '@/types/NextApiRequestWithFIle';
-import upload from '@/lib/multer'; // Importa a configuração do multer
+import upload from '@/lib/multer'; 
 import { generateAndSentAllPDFs } from '@/utils/generate-pdfs/generateAndSentAllPDFs';
 
-// Configura o Next.js para não usar o analisador de corpo padrão
 export const config = {
   api: {
     bodyParser: false, 
@@ -11,7 +10,6 @@ export const config = {
 };
 
 export default function handler(req: NextApiRequestWithFile, res: NextApiResponse) {
-  // Usa o middleware de upload do multer
   upload.single('file')(req as any, res as any, async (err: any) => {
     if (err) {
       console.error('Erro ao fazer upload:', err);
@@ -25,13 +23,11 @@ export default function handler(req: NextApiRequestWithFile, res: NextApiRespons
     }
 
     try {
-      // Chama a função generateAllPDFs, passando o buffer do arquivo
       await generateAndSentAllPDFs(fileBuffer); 
-
-      res.status(200).send('ok');
+      res.status(200).send('Boletins gerados e enviados com sucesso!');
     } catch (error) {
-      console.error('Erro ao gerar o PDF:', error);
-      res.status(500).json({ error: 'Erro ao gerar o PDF' });
+      console.error('Erro ao gerar os boletins:', error);
+      res.status(500).json({ error: 'Erro ao gerar os boletins' });
     }
   });
 }

@@ -32,6 +32,7 @@ model Student {
   email                String
   reportCard           Bytes
   reportCardSentStatus ReportCardStatus  @default(NOT_SENT)
+  sendTryCount         Int @default(0)
   createdAt            DateTime? @default(now())
   updatedAt            DateTime  @updatedAt
 
