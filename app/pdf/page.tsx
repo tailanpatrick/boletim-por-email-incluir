@@ -40,7 +40,10 @@ export default function PDF() {
       {/* <PDFViewer studentId={'4'} />
       <GeneratePDFs /> */}
 
-      <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center gap-4"
+      >
         <FileUpload onFileUpload={setSelectedFile} />
         <button type="submit" className="bg-white flex-1 p-4 rounded-md">
           Gerar Boletins
