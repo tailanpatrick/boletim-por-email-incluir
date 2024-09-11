@@ -64,7 +64,7 @@ function extractData(json: any[]): StudentData[] {
             status: totalPoints >= passingAverage ? 'Aprovado' : 'Reprovado',
             email:email,
         };
-    }).slice(4) as StudentData[];
+    }).slice(4).filter(student => student !== null) as StudentData[];
 }
 
 export default extractData;
