@@ -12,8 +12,8 @@ export async function generateAndSentAllPDFs(xlsxFileBuffer: Buffer) {
     
     const reportCardService = new CreateReportCardService();
 
-    for (const student of students) {
-        if (!student) continue;
+    const promises = students.map(async (student)=> {
+        if (!student) return;
 
         try {
             const pdf = await generatePDF(student.id);
@@ -29,5 +29,7 @@ export async function generateAndSentAllPDFs(xlsxFileBuffer: Buffer) {
            
             console.error(`Erro ao gerar boletim para ${student.name}: ${error.message}`);
         }
-    }
+    });
+    
+    Promise.all(promises);
 }
