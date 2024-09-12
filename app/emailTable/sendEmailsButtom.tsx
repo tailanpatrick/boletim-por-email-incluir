@@ -21,9 +21,9 @@ function SendEmailsButton({ initialStudents }: { initialStudents: any[] }) {
 
       if (response.ok) {
         alert(result.message);
-
+        console.log(result.sendEmails, "oi");
         const updatedStudents = students.map((student) => {
-          const emailSentStatus = result.sentEmails.includes(student.email);
+          const emailSentStatus = result.sendEmails.includes(student.email);
           if (emailSentStatus) {
             return {
               ...student,

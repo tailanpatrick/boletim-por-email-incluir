@@ -68,7 +68,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     // //}
     console.log(sendEmails);
-    return NextResponse.json({ message: "Email sent", sendEmails });
+    return NextResponse.json({ message: "Email sent", sendEmails: sendEmails });
   } catch (err: any) {
     return NextResponse.json({ message: err.message });
   }
