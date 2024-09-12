@@ -1,6 +1,6 @@
 "use client";
 
-import { sendEmail } from "../actions/actions";
+import { sendEmail } from "../actions/sendEmail";
 export default function Page() {
   return (
     <>
