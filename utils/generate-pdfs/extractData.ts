@@ -1,7 +1,7 @@
 import StudentData from "@/types/StudentData";
 
 function extractData(json: any[]): StudentData[] {
-    const passingAverage = 180;
+    const passingAverage = 60;
 
     // Identificar o total de aulas
     const firstRecord = json[3] || {};
@@ -64,7 +64,7 @@ function extractData(json: any[]): StudentData[] {
             status: totalPoints >= passingAverage ? 'Aprovado' : 'Reprovado',
             email:email,
         };
-    }).slice(4) as StudentData[];
+    }).slice(4).filter(student => student !== null) as StudentData[];
 }
 
 export default extractData;

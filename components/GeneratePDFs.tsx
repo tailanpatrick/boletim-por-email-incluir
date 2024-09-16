@@ -16,8 +16,8 @@ const GeneratePDFs = () => {
             }
 
             console.log('Boletins gerados!')
-        } catch (error) {
-            console.error('Erro ao gerar o PDF:', error);
+        } catch (error: any) {
+            console.error('Erro ao gerar o PDF:', error.message as string);
         }
     }
     return ( 

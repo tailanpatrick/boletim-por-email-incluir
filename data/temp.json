@@ -2,7 +2,7 @@
   {
     "id": "4",
     "name": "Cláudio Fonseca da Silva",
-    "course": "Eletrônica ",
+    "course": "Eletronica ",
     "semester": " 1 Semestre",
     "presence": [
       "P",
@@ -20,14 +20,14 @@
     ],
     "percentPresence": 100,
     "totalPoints": 88,
-    "average": 180,
-    "status": "Reprovado",
+    "average": 60,
+    "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
   {
     "id": "5",
     "name": "Júlio Ferraz de Souza",
-    "course": "Eletrônica ",
+    "course": "Eletronica ",
     "semester": " 1 Semestre",
     "presence": [
       "P",
@@ -45,14 +45,14 @@
     ],
     "percentPresence": 91.66666666666666,
     "totalPoints": 268,
-    "average": 180,
+    "average": 60,
     "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
   {
     "id": "6",
     "name": "Pedro Lopes de Oliveira",
-    "course": "Eletrônica ",
+    "course": "Eletronica ",
     "semester": " 1 Semestre",
     "presence": [
       "P",
@@ -70,14 +70,14 @@
     ],
     "percentPresence": 91.66666666666666,
     "totalPoints": 268,
-    "average": 180,
+    "average": 60,
     "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
   {
     "id": "7",
     "name": "Higor Marrone Perpetuo Silva",
-    "course": "Eletrônica ",
+    "course": "Eletronica ",
     "semester": " 1 Semestre",
     "presence": [
       "P",
@@ -95,14 +95,14 @@
     ],
     "percentPresence": 83.33333333333334,
     "totalPoints": 268,
-    "average": 180,
+    "average": 60,
     "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
   {
     "id": "8",
     "name": "Leandro Grei Ribeiro",
-    "course": "Eletrônica ",
+    "course": "Eletronica ",
     "semester": " 1 Semestre",
     "presence": [
       "P",
@@ -120,14 +120,14 @@
     ],
     "percentPresence": 83.33333333333334,
     "totalPoints": 268,
-    "average": 180,
+    "average": 60,
     "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
   {
     "id": "9",
     "name": "Matheus Henrique de Carvalho Oliveira",
-    "course": "Eletrônica ",
+    "course": "Eletronica ",
     "semester": " 1 Semestre",
     "presence": [
       "P",
@@ -145,14 +145,14 @@
     ],
     "percentPresence": 83.33333333333334,
     "totalPoints": 268,
-    "average": 180,
+    "average": 60,
     "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
   {
     "id": "10",
     "name": "Gustavo Ramalho de Deus Santos",
-    "course": "Eletrônica ",
+    "course": "Eletronica ",
     "semester": " 1 Semestre",
     "presence": [
       "P",
@@ -170,14 +170,14 @@
     ],
     "percentPresence": 83.33333333333334,
     "totalPoints": 268,
-    "average": 180,
+    "average": 60,
     "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
   {
     "id": "11",
     "name": "Milraldo Rodrigues Ferreira",
-    "course": "Eletrônica ",
+    "course": "Eletronica ",
     "semester": " 1 Semestre",
     "presence": [
       "P",
@@ -195,11 +195,35 @@
     ],
     "percentPresence": 83.33333333333334,
     "totalPoints": 168,
-    "average": 180,
-    "status": "Reprovado",
+    "average": 60,
+    "status": "Aprovado",
     "email": "tailan06@hotmail.com"
   },
-  null,
+  {
+    "id": "12",
+    "name": "teste",
+    "course": "Eletronica ",
+    "semester": " 1 Semestre",
+    "presence": [
+      "P",
+      "P",
+      "P",
+      "P",
+      "P",
+      "P",
+      "P",
+      "P",
+      "F",
+      "F",
+      "P",
+      "P"
+    ],
+    "percentPresence": 83.33333333333334,
+    "totalPoints": 168,
+    "average": 60,
+    "status": "Aprovado",
+    "email": "tailan06@hotmail.com"
+  },
   null,
   null,
   null,
