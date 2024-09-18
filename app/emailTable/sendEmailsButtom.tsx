@@ -27,7 +27,7 @@ function SendEmailsButton({ initialStudents }: { initialStudents: any[] }) {
           if (emailSentStatus) {
             return {
               ...student,
-              reportCardSentStatus: "SENT",
+              reportCardSentStatus: "ENVIADO",
             };
           }
           return student;
@@ -49,28 +49,59 @@ function SendEmailsButton({ initialStudents }: { initialStudents: any[] }) {
 
   return (
     <>
-      <div className="text-white">
-        <table>
-          <thead>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+          <thead className="bg-orange-500 text-white">
             <tr>
-              <th>Name</th>
-              <th>Course</th>
-              <th>Email</th>
-              <th>Report Card Sent Status</th>
+              <th className="py-3 px-6 border border-gray-300">Name</th>
+              <th className="py-3 px-6 border border-gray-300">Course</th>
+              <th className="py-3 px-6 border border-gray-300">Email</th>
+              <th className="py-3 px-6 border border-gray-300">
+                Report Card Sent Status
+              </th>
             </tr>
           </thead>
-          <tbody>
-            {students.map((student) => (
-              <tr key={student.id}>
-                <td>{student.name}</td>
-                <td>{student.course}</td>
-                <td>{student.email}</td>
-                <td>{student.reportCardSentStatus}</td>
+          <tbody className="text-gray-700">
+            {students.map((student, index) => (
+              <tr
+                key={student.email}
+                className={`${
+                  index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                } hover:bg-gray-100`}
+              >
+                <td className="py-3 px-6 border border-gray-300">
+                  {student.name}
+                </td>
+                <td className="py-3 px-6 border border-gray-300">
+                  {student.course}
+                </td>
+                <td className="py-3 px-6 border border-gray-300">
+                  {student.email}
+                </td>
+                <td
+                  className={`py-3 px-6 border border-gray-300 ${
+                    student.reportCardSentStatus === "SENT"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {student.reportCardSentStatus === "SENT"
+                    ? "ENVIADO"
+                    : "NÃO ENVIADO"}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <button onClick={handleSendEmails} disabled={isSending}>
+        <button
+          onClick={handleSendEmails}
+          disabled={isSending}
+          className={`mt-6 px-6 py-3 rounded-md text-white ${
+            isSending
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-orange-500 hover:bg-orange-600"
+          } shadow-lg border border-gray-300`}
+        >
           {isSending ? "Enviando emails..." : "Enviar emails para todos"}
         </button>
       </div>
