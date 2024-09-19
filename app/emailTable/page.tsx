@@ -18,7 +18,7 @@ export default async function StudentsPage() {
   });
 
   return (
-    <div>
+    <div className="flex flex-col gap-3 md:p-20 w-full">
       <h1>Students with Report Cards Not Sent</h1>
       {/* Passa students como props para o componente do cliente */}
       <SendEmailsButton initialStudents={students} />

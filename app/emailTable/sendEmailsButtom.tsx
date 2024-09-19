@@ -49,7 +49,7 @@ function SendEmailsButton({ initialStudents }: { initialStudents: any[] }) {
 
   return (
     <>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto float-end rounded-lg">
         <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
           <thead className="bg-orange-500 text-white">
             <tr>
