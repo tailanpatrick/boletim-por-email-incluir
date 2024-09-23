@@ -70,7 +70,7 @@ export const FileUpload = ({
         >
           <label
             htmlFor="file"
-            className="h-full w-full flex flex-col gap-3 justify-center items-center text-center cursor-pointer"
+            className="h-full w-full flex flex-col gap-3 justify-center items-center text-center cursor-pointer hover:bg-gray-100 animate-pulse"
           >
             <IoCloudUploadSharp className="text-5xl text-orange-500" />
             {dropzoneText}
