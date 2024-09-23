@@ -1,7 +1,11 @@
+"use client"
+import { usePathname } from 'next/navigation';
 import Image from "next/image";
 import Link from "next/link";
 
 const Navbar = () => {
+    const pathname  = usePathname();
+
     return (
         <nav className="relative">
             <div className="bg-white">
@@ -20,10 +24,15 @@ const Navbar = () => {
                         </a>
                     </div>
                     <div className="flex space-x-4 items-center">
-                        <Link
+                        {pathname === '/' && <Link
                             href="/emailTable"
                             className="bg-orange-400 px-5 py-3 rounded text-white hover:bg-orange-300 text-sm"
-                        >Boletins Gerados</Link>
+                        >Boletins Gerados</Link>}
+
+                        {pathname === '/emailTable' && <Link
+                            href="/"
+                            className="bg-orange-400 px-5 py-3 rounded text-white hover:bg-orange-300 text-sm"
+                        >Enviar arquivo</Link>}
                     </div>
                 </div>
             </div>
