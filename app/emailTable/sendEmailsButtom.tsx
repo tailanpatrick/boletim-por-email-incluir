@@ -23,11 +23,13 @@ function SendEmailsButton({ initialStudents }: { initialStudents: any[] }) {
         alert(result.message);
         console.log(result.sendEmails, "oi");
         const updatedStudents = students.map((student) => {
-          const emailSentStatus = result.sendEmails.includes(student.email);
+          const emailSentStatus = result.sendedEmailsList.includes(
+            student.email
+          );
           if (emailSentStatus) {
             return {
               ...student,
-              reportCardSentStatus: "ENVIADO",
+              reportCardSentStatus: "SENT",
             };
           }
           return student;
@@ -49,7 +51,7 @@ function SendEmailsButton({ initialStudents }: { initialStudents: any[] }) {
 
   return (
     <>
-      <div className="overflow-x-auto float-end rounded-lg">
+      <div className="overflow-x-auto rounded-lg">
         <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
           <thead className="bg-orange-500 text-white">
             <tr>
@@ -93,10 +95,14 @@ function SendEmailsButton({ initialStudents }: { initialStudents: any[] }) {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Botão fora do div overflow */}
+      <div className="sticky bottom-0 bg-white py-4">
         <button
           onClick={handleSendEmails}
           disabled={isSending}
-          className={`mt-6 px-6 py-3 rounded-md text-white ${
+          className={`px-6 py-3 rounded-md text-white ${
             isSending
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-orange-500 hover:bg-orange-600"

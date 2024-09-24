@@ -7,6 +7,9 @@ export default async function StudentsPage() {
   const students = await prisma.student.findMany({
     where: {
       reportCardSentStatus: "NOT_SENT",
+      sendTryCount: {
+        lt: 4,
+      },
     },
     select: {
       id: true,
@@ -19,7 +22,6 @@ export default async function StudentsPage() {
 
   return (
     <div className="flex flex-col gap-3 md:p-20 w-full">
-      <h1>Students with Report Cards Not Sent</h1>
       {/* Passa students como props para o componente do cliente */}
       <SendEmailsButton initialStudents={students} />
     </div>
