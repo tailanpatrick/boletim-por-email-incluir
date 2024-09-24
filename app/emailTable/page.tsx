@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar";
 import SendEmailsButton from "./sendEmailsButtom";
 import prismaClient from "@/lib/prisma-client";
 
@@ -21,9 +22,12 @@ export default async function StudentsPage() {
   });
 
   return (
-    <div className="flex flex-col gap-3 md:p-20 w-full">
-      {/* Passa students como props para o componente do cliente */}
-      <SendEmailsButton initialStudents={students} />
-    </div>
+    <>
+      <Navbar />
+      <div className="flex flex-col gap-3 md:p-20 w-full">
+        {/* Passa students como props para o componente do cliente */}
+        <SendEmailsButton initialStudents={students} />
+      </div>
+    </>
   );
 }

@@ -1,9 +1,13 @@
 "use client";
 import { useState } from "react";
 import FileUpload from "@/components/ui/FileUpload";
+import Navbar from "@/components/Navbar";
+import DownloadTemplate from "@/components/ui/DownloadTemplate";
+import Button from "@/components/ui/Button";
 
 export default function Home() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [showDownloadComponent, setShowDownloadComponent] = useState(true);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,23 +35,27 @@ export default function Home() {
 
       alert("Boletins gerados e enviados com sucesso!");
     } catch (error: any) {
-      
+
       alert(`Erro de rede: ${error.message as string}`);
     }
   };
 
   return (
-    <div className="flex flex-col gap-3 p-20">
+    <>
+      <Navbar/>
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col items-center gap-4"
-      >
-        <FileUpload onFileUpload={setSelectedFile} />
-        <button type="submit" className="bg-white flex-1 p-4 rounded-md">
-          Gerar Boletins
-        </button>
-      </form>
-    </div>
+      <div className="flex flex-col h-full items-center justify-center text-center gap-5 md:p-10">
+
+      {showDownloadComponent && <DownloadTemplate/>}
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col h-full w-full items-center gap-4"
+        >
+          <FileUpload onFileUpload={setSelectedFile} setShowDownloadComponent={setShowDownloadComponent} handleClickGenerateButton={handleSubmit}/>
+
+        </form>
+      </div>
+    </>
+
   );
 }

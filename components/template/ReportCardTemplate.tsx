@@ -52,25 +52,27 @@ const ReportCardTemplate: React.FC<{ student: StudentData }> = ({ student }) => 
                 <div className="flex flex-wrap text-center">
                     <div className="min-w-full p-2 border-b">
                         <span className="block bg-black text-white text-sm font-medium p-2">Curso</span>
-                        <span className="block bg-gray-100 text-gray-700 px-2 font-semibold py-1">
+                        <span className="block bg-gray-200 text-gray-700 px-2 font-semibold py-1">
                             {student.course}
                         </span>
                     </div>
                     <div className="min-w-[50%] p-2 border-b">
                         <span className="block bg-black text-white text-sm font-medium p-2">Nota</span>
-                        <span className="block bg-gray-100 text-gray-700 px-2 py-1 font-semibold">
+                        <span className={`block bg-gray-200 px-2 py-1 font-semibold
+                            ${student.totalPoints >= student.average ? 'text-green-600': 'text-red-600'}`
+                        }>
                             {student.totalPoints}
                         </span>
                     </div>
                     <div className="min-w-[50%] p-2 border-b">
                         <span className="block bg-black text-white text-sm font-medium p-2">Média</span>
-                        <span className="block bg-gray-100 text-gray-700 px-2 py-1">
-                            
+                        <span className="block bg-gray-200 text-gray-700 font-semibold px-2 py-1">
+                            {student.average}
                         </span>
                     </div>
                     <div className="flex-1 min-w-full p-2 border-b">
                         <span className="block bg-black text-white text-sm font-medium p-2">Situação</span>
-                        <span className={`block ${student.status === 'Aprovado' ? 'text-green-600' : 'text-red-600'} font-semibold px-2 py-1`}>
+                        <span className={`block ${student.status === 'Aprovado' ? 'text-green-600' : 'text-red-600'} bg-gray-200 font-semibold px-2 py-1`}>
                             {student.status}
                         </span>
                     </div>
