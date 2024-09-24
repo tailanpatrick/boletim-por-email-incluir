@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar";
-import SendEmailsButton from "./sendEmailsButtom";
+import SendEmailsButton from "./sendEmailsTable";
 import prismaClient from "@/lib/prisma-client";
 
 const prisma = prismaClient;
