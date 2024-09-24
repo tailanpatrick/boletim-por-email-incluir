@@ -97,7 +97,7 @@ export const FileUpload = ({
               <FaRegCheckCircle className="text-3xl border-sm" />
             </div>
             <div className="absolute right-3 md:right-7 cursor-pointer" onClick={handleRemoveFile}>
-              <MdCancel className="text-red-500 text-4xl mb-2" title="Remover carregamento de arquivo" />
+              <MdCancel className="text-red-500 text-4xl mb-2 hover:text-red-400" title="Remover carregamento de arquivo" />
             </div>
 
           </div>
