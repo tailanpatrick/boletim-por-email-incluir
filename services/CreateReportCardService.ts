@@ -36,7 +36,7 @@ class CreateReportCardService {
         const studentWithReportCard = await prismaClient.student.create({
             data: {
                 name: student.name,
-                course: student.course, // Armazena o curso com acentos
+                course: student.course, 
                 semester: student.semester,
                 presence: student.presence,
                 percentPresence: student.percentPresence,
