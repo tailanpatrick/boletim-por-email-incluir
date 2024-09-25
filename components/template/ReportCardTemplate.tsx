@@ -30,11 +30,11 @@ const ReportCardTemplate: React.FC<{ student: StudentData }> = ({ student }) => 
             <div className="mb-6">
                 <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">Frequência do Aluno</h2>
                 <div className="flex flex-wrap gap-2">
-                    {student.presence.map((entry: string, index: number) => (
+                    {student.presence.map((entry: string[], index: number) => (
                         <div key={index} className="flex-1 min-w-[80px] bg-gray-100 text-center">
-                            <span className="block bg-black text-white text-sm font-medium p-2">{index + 1}</span>
-                            <span className={`block ${entry === 'P' ? 'text-gray-700' : 'text-red-700'} px-2 py-1`}>
-                                {entry}
+                            <span className="block bg-black text-white text-sm font-medium p-2">{entry[0]}</span>
+                            <span className={`block ${entry[1] === 'P' ? 'text-gray-700' : 'text-red-700'} px-2 py-1`}>
+                                {entry[1]}
                             </span>
                         </div>
                     ))}
