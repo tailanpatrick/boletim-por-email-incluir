@@ -1,52 +1,551 @@
 [
   {
     "id": "4",
-    "name": "teste",
-    "course": "Nome do curso ",
-    "semester": " Semestre do curso (Importante manter o traço dividindo curso e semetre)",
+    "name": "Cláudio Fonseca da Silva",
+    "course": "Eletrônica",
+    "semester": "1 Semestre",
     "presence": [
-      "P",
-      "P",
-      "P",
-      "P",
-      "P",
-      "P",
-      "P",
-      "P",
-      "P",
-      "P",
-      "P",
-      "P"
+      [
+        "00/01",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/01",
+        "P"
+      ]
     ],
     "percentPresence": 100,
     "totalPoints": 60,
     "average": 60,
     "status": "Aprovado",
-    "email": "emaildoaluno"
+    "email": "tailan06@hotmail.com"
   },
   {
     "id": "5",
-    "name": "teste2",
-    "course": "Nome do curso ",
-    "semester": " Semestre do curso (Importante manter o traço dividindo curso e semetre)",
+    "name": "Júlio Ferraz de Souza",
+    "course": "Eletrônica",
+    "semester": "1 Semestre",
     "presence": [
-      "P",
-      "P",
-      "P",
-      "F",
-      "P",
-      "P",
-      "P",
-      "P",
-      "P",
-      "P",
-      "P",
-      "P"
+      [
+        "00/01",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "F"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/01",
+        "P"
+      ]
     ],
     "percentPresence": 91.66666666666666,
-    "totalPoints": 50,
+    "totalPoints": 269,
     "average": 60,
-    "status": "Reprovado",
-    "email": "emaildoaluno"
+    "status": "Aprovado",
+    "email": "tailan06@hotmail.com"
+  },
+  {
+    "id": "6",
+    "name": "Pedro Lopes de Oliveira",
+    "course": "Eletrônica",
+    "semester": "1 Semestre",
+    "presence": [
+      [
+        "00/01",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "F"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/01",
+        "P"
+      ]
+    ],
+    "percentPresence": 91.66666666666666,
+    "totalPoints": 268,
+    "average": 60,
+    "status": "Aprovado",
+    "email": "tailan06@hotmail.com"
+  },
+  {
+    "id": "7",
+    "name": "Higor Marrone Perpetuo Silva",
+    "course": "Eletrônica",
+    "semester": "1 Semestre",
+    "presence": [
+      [
+        "00/01",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "F"
+      ],
+      [
+        "00/00",
+        "F"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/01",
+        "P"
+      ]
+    ],
+    "percentPresence": 83.33333333333334,
+    "totalPoints": 268,
+    "average": 60,
+    "status": "Aprovado",
+    "email": "tailan06@hotmail.com"
+  },
+  {
+    "id": "8",
+    "name": "Leandro Grei Ribeiro",
+    "course": "Eletrônica",
+    "semester": "1 Semestre",
+    "presence": [
+      [
+        "00/01",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "F"
+      ],
+      [
+        "00/00",
+        "F"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/01",
+        "P"
+      ]
+    ],
+    "percentPresence": 83.33333333333334,
+    "totalPoints": 268,
+    "average": 60,
+    "status": "Aprovado",
+    "email": "tailan06@hotmail.com"
+  },
+  {
+    "id": "9",
+    "name": "Matheus Henrique de Carvalho Oliveira",
+    "course": "Eletrônica",
+    "semester": "1 Semestre",
+    "presence": [
+      [
+        "00/01",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "F"
+      ],
+      [
+        "00/00",
+        "F"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/01",
+        "P"
+      ]
+    ],
+    "percentPresence": 83.33333333333334,
+    "totalPoints": 268,
+    "average": 60,
+    "status": "Aprovado",
+    "email": "tailan06@hotmail.com"
+  },
+  {
+    "id": "10",
+    "name": "Gustavo Ramalho de Deus Santos",
+    "course": "Eletrônica",
+    "semester": "1 Semestre",
+    "presence": [
+      [
+        "00/01",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "F"
+      ],
+      [
+        "00/00",
+        "F"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/01",
+        "P"
+      ]
+    ],
+    "percentPresence": 83.33333333333334,
+    "totalPoints": 268,
+    "average": 60,
+    "status": "Aprovado",
+    "email": "tailan06@hotmail.com"
+  },
+  {
+    "id": "11",
+    "name": "Milraldo Rodrigues Ferreira",
+    "course": "Eletrônica",
+    "semester": "1 Semestre",
+    "presence": [
+      [
+        "00/01",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "F"
+      ],
+      [
+        "00/00",
+        "F"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/01",
+        "P"
+      ]
+    ],
+    "percentPresence": 83.33333333333334,
+    "totalPoints": 168,
+    "average": 60,
+    "status": "Aprovado",
+    "email": "tailan06@hotmail.com"
+  },
+  {
+    "id": "12",
+    "name": "teste",
+    "course": "Eletrônica",
+    "semester": "1 Semestre",
+    "presence": [
+      [
+        "00/01",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/00",
+        "F"
+      ],
+      [
+        "00/00",
+        "F"
+      ],
+      [
+        "00/00",
+        "P"
+      ],
+      [
+        "00/01",
+        "P"
+      ]
+    ],
+    "percentPresence": 83.33333333333334,
+    "totalPoints": 145,
+    "average": 60,
+    "status": "Aprovado",
+    "email": "tailan06@hotmail.com"
   }
 ]
