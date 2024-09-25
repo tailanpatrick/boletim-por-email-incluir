@@ -70,9 +70,9 @@ export const FileUpload = ({
         >
           <label
             htmlFor="file"
-            className="h-full w-full flex flex-col gap-3 justify-center items-center text-center cursor-pointer hover:bg-gray-100 animate-pulse"
+            className="h-full w-full flex flex-col gap-3 justify-center items-center text-center cursor-pointer hover:bg-gray-100"
           >
-            <IoCloudUploadSharp className="text-5xl text-orange-500" />
+            <IoCloudUploadSharp className="text-5xl text-orange-500 animate-pulse" />
             {dropzoneText}
             <span className="text-sm text-gray-500">Planilhas no formato XLSX</span>
           </label>
