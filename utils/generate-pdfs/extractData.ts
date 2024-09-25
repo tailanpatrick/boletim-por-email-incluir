@@ -11,12 +11,12 @@ function extractData(json: any[]): StudentData[] {
 
     return json.map((student, index) => {
         const courseAndSemester = Object.keys(student)[0]; 
-        const course = courseAndSemester.split('-')[0] 
-        const semester = courseAndSemester.split('-')[1] 
-        
+        const [course, semester] = courseAndSemester.split('-').map(value => value.trim());
+
+
         const name = student[courseAndSemester]; 
 
-        const email = student.__EMPTY_21;
+        const email = student.__EMPTY_27;
         
         if (!name) {
             return null;
@@ -29,7 +29,7 @@ function extractData(json: any[]): StudentData[] {
         let totalAttendance = 0;
         let percentPresence = 0;
         
-
+        // Extrai as Presenças
         for (let i = 0; i < totalClasses; i++) {
             let attendanceStatus = student[`__EMPTY_${i}`];
 
@@ -47,10 +47,9 @@ function extractData(json: any[]): StudentData[] {
 
         percentPresence = (totalAttendance / totalClasses) * 100;
 
-        for (let i = 13; i <= 17; i++) {
-            totalPoints += Number(student[`__EMPTY_${i}`]);
+        for (let i = 13; i <= 23; i++) {
+            totalPoints += Number(student[`__EMPTY_${i}`]) || 0;
         }
-
 
         return {
             id: index.toString(),
