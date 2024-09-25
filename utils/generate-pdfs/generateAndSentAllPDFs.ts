@@ -17,8 +17,6 @@ export async function generateAndSentAllPDFs(xlsxFileBuffer: Buffer) {
 
         try {
             const pdf = await generatePDF(student.id);
-            await savePDF(pdf, student.name.replace(/ /g, '_'));
-
     
             const result = await reportCardService.execute(student, pdf);
 
