@@ -39,31 +39,45 @@ export async function POST(req: NextRequest, res: NextResponse) {
     });
 
     if (reportCard) {
-      await transport.sendMail({
-        from: sender,
-        to: recipients,
-        subject: "Boletim Projeto Incluir",
-        text: `Olá ${students[0].name}, segue em anexo seu boletim. Att projeto incluir`,
-        category: "Integration Test",
-        sandbox: true,
-        attachments: [
-          {
-            filename: "boletim.pdf",
-            content: reportCard.reportCard,
-            enconding: "base64",
+      try{
+        
+        await transport.sendMail({
+          from: sender,
+          to: recipients,
+          subject: "Boletim Projeto Incluir",
+          text: `Olá ${students[0].name}, segue em anexo seu boletim. Att projeto incluir`,
+          category: "Integration Test",
+          sandbox: true,
+          attachments: [
+            {
+              filename: "boletim.pdf",
+              content: reportCard.reportCard,
+              enconding: "base64",
+            },
+          ],
+        });
+  
+        await prisma.student.update({
+          where: {
+            id: students[0].id,
           },
-        ],
-      });
+          data: {
+            reportCardSentStatus: ReportCardStatus.SENT,
+          },
+        });
+        sendEmails.push(students[0].email);
+      } catch(e){
 
-      await prisma.student.update({
-        where: {
-          id: students[0].id,
-        },
-        data: {
-          reportCardSentStatus: ReportCardStatus.SENT,
-        },
-      });
-      sendEmails.push(students[0].email);
+        // reunião com Matheus
+        await prisma.student.update({
+          where: {
+            id: students[0].id,
+          },
+          data: {
+            reportCardSentStatus: ReportCardStatus.ERROR_SENT,
+          },
+        });
+      }
     } else return Response.json({ message: "No report card found" });
 
     // //}
