@@ -24,7 +24,7 @@ model Student {
   name                 String
   course               String
   semester             String
-  presence             String[]
+  presence             Json
   percentPresence      Float
   totalPoints          Float
   average              Float
