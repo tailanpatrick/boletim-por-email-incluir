@@ -9,40 +9,54 @@ function extractData(json: any[]): StudentData[] {
         .filter(key => key.startsWith('__EMPTY') && !isNaN(Number(key.split('_')[1])) && Number(key.split('_')[1]) <= 12)
         .length - 1;
 
+    let days: string[] = [];
+
     return json.map((student, index) => {
-        const courseAndSemester = Object.keys(student)[0]; 
+        const courseAndSemester = Object.keys(student)[0];
         const [course, semester] = courseAndSemester.split('-').map(value => value.trim());
 
 
-        const name = student[courseAndSemester]; 
+        const name = student[courseAndSemester];
 
         const email = student.__EMPTY_27;
-        
+
         if (!name) {
             return null;
         }
 
-        // Extração de presença
-        const presence: string[] = [];
-
         let totalPoints = 0;
         let totalAttendance = 0;
         let percentPresence = 0;
-        
-        // Extrai as Presenças
+
+        const presence: string[][] = [];
+
+        // Extrai os Dias e Presenças
         for (let i = 0; i < totalClasses; i++) {
-            let attendanceStatus = student[`__EMPTY_${i}`];
+            let day = '';
 
-            if(i==0){
-                attendanceStatus = student[`__EMPTY`];
-            }
-            
-            const isPresent = attendanceStatus === 'P';
+            // Captura os dias corretamente
+            if (index === 3) {
+                if (i === 0) {
+                    day = student[`__EMPTY`] || ''; // Primeiro dia
+                } else {
+                    day = student[`__EMPTY_${i}`] || ''; // Dias subsequentes
+                }
 
-            if (isPresent) {
-                totalAttendance++;
+                // Adiciona o dia somente se não estiver vazio
+                if (day) {
+                    days.push(day);
+                }
             }
-            presence.push(attendanceStatus || '');
+
+            // Verifica o status de presença
+            let attendanceStatus = student[`__EMPTY_${i}`] || '';
+            if (i === 0) {
+                attendanceStatus = student[`__EMPTY`] || '';
+            }
+
+            // Adiciona o par [dia, presença] no array presence
+            // Aqui, usamos days[i] para pegar o dia correspondente, mesmo que possa estar vazio
+            presence.push([days[i], attendanceStatus]);
         }
 
         percentPresence = (totalAttendance / totalClasses) * 100;
@@ -61,7 +75,7 @@ function extractData(json: any[]): StudentData[] {
             totalPoints: totalPoints || 0,
             average: passingAverage, // Média fixa para aprovação
             status: totalPoints >= passingAverage ? 'Aprovado' : 'Reprovado',
-            email:email,
+            email: email,
         };
     }).slice(4).filter(student => student !== null) as StudentData[];
 }

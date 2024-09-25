@@ -3,7 +3,7 @@ export default interface StudentData {
     name: string;
     course: string;
     semester: string;
-    presence: string[];
+    presence: string[][];
     percentPresence: number;
     totalPoints: number;
     average: number; // Média fixa de aprovação
