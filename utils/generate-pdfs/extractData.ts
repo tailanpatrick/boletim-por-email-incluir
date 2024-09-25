@@ -34,15 +34,14 @@ function extractData(json: any[]): StudentData[] {
         for (let i = 0; i < totalClasses; i++) {
             let day = '';
 
-            // Captura os dias corretamente
             if (index === 3) {
                 if (i === 0) {
-                    day = student[`__EMPTY`] || ''; // Primeiro dia
+                    day = student[`__EMPTY`] || ''; 
                 } else {
-                    day = student[`__EMPTY_${i}`] || ''; // Dias subsequentes
+                    day = student[`__EMPTY_${i}`] || ''; 
                 }
 
-                // Adiciona o dia somente se não estiver vazio
+  
                 if (day) {
                     days.push(day);
                 }
@@ -50,12 +49,15 @@ function extractData(json: any[]): StudentData[] {
 
             // Verifica o status de presença
             let attendanceStatus = student[`__EMPTY_${i}`] || '';
+
             if (i === 0) {
                 attendanceStatus = student[`__EMPTY`] || '';
+            } 
+
+            if(attendanceStatus.toUpperCase() === 'P'){
+                totalAttendance++;
             }
 
-            // Adiciona o par [dia, presença] no array presence
-            // Aqui, usamos days[i] para pegar o dia correspondente, mesmo que possa estar vazio
             presence.push([days[i], attendanceStatus]);
         }
 
