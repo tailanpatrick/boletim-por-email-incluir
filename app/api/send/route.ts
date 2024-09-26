@@ -6,13 +6,48 @@ import prismaClient from "@/lib/prisma-client";
 
 const prisma = prismaClient;
 
-interface EmailParams {
+interface Email {
   recipients: string[];
-  reportCard: Buffer;
-  studentName: string;
-  studentID: string;
+  subject: string;
+  text: string;
+  attachments?: { filename: string; content: Buffer; encoding: string }[];
 }
 
+class ReportCardEmail implements Email {
+  recipients: string[];
+  subject: string;
+  text: string;
+  attachments: { filename: string; content: Buffer; encoding: string }[];
+
+  constructor(studentName: string, reportCard: Buffer, recipients: string[]) {
+    this.recipients = recipients;
+    this.subject = "Boletim Projeto Incluir";
+    this.text = `Olá ${studentName}, segue em anexo seu boletim. Att projeto incluir`;
+    this.attachments = [
+      {
+        filename: "boletim.pdf",
+        content: reportCard,
+        encoding: "base64",
+      },
+    ];
+  }
+}
+class EmailFactory {
+  static createEmail(
+    type: string,
+    student: { name: string; email: string; id: string },
+    reportCard?: Buffer
+  ): Email {
+    switch (type) {
+      case "reportCard":
+        if (!reportCard) throw new Error("Report Card is required");
+        return new ReportCardEmail(student.name, reportCard, [student.email]);
+      //coloque aqui mais tipos dps?
+      default:
+        throw new Error("Invalid email type");
+    }
+  }
+}
 class EmailTransporter {
   static createTransport() {
     return Nodemailer.createTransport(
@@ -34,26 +69,15 @@ class EmailService {
       name: "Mailtrap Test",
     };
   }
-  async sendEmail({
-    recipients,
-    reportCard,
-    studentName,
-    studentID,
-  }: EmailParams) {
+  async sendEmail(email: Email) {
     await this.tranport.sendMail({
       from: this.sender,
-      to: recipients,
-      subject: "Boletim Projeto Incluir",
-      text: `Olá ${studentName}, segue em anexo seu boletim. Att projeto incluir`,
+      to: email.recipients,
+      subject: email.subject,
+      text: email.text,
       category: "Integration Test",
       sandbox: true,
-      attachments: [
-        {
-          filename: "boletim.pdf",
-          content: reportCard,
-          encoding: "base64",
-        },
-      ],
+      attachments: email.attachments,
     });
   }
 }
@@ -63,8 +87,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     console.log("Request received at /api/send");
     const { students } = await req.json();
     const sendedEmailsList: string[] = [];
+
     for (const student of students) {
-      await new Promise((resolve) => setTimeout(resolve, 2000)); //limitação do api
+      await new Promise((resolve) => setTimeout(resolve, 2000)); //limitação da API
+
       const reportCard = await prisma.student.findUnique({
         where: {
           id: student.id,
@@ -75,25 +101,34 @@ export async function POST(req: NextRequest, res: NextResponse) {
         },
       });
       if (reportCard?.reportCard) {
-        await emailService.sendEmail({
-          recipients: [student.email],
-          reportCard: reportCard.reportCard,
-          studentName: student.name,
-          studentID: student.id,
-        });
-        await prisma.student.update({
-          where: {
-            id: student.id,
-          },
-          data: {
-            reportCardSentStatus: ReportCardStatus.SENT,
-            sendTryCount: reportCard.sendTryCount + 1,
-          },
-        });
-        sendedEmailsList.push(student.email);
-      } else {
-        console.log(`No report card found for ${student.name}`);
-      }
+        try {
+          const email = EmailFactory.createEmail(
+            "reportCard",
+            student,
+            reportCard.reportCard
+          );
+          await prisma.student.update({
+            where: {
+              id: student.id,
+            },
+            data: {
+              reportCardSentStatus: ReportCardStatus.SENT,
+              sendTryCount: reportCard.sendTryCount + 1,
+            },
+          });
+          sendedEmailsList.push(student.email);
+        } catch {
+          await prisma.student.update({
+            where: {
+              id: student.id,
+            },
+            data: {
+              reportCardSentStatus: ReportCardStatus.ERROR_SENT,
+              sendTryCount: reportCard.sendTryCount + 1,
+            },
+          });
+        }
+      } else return Response.json({ message: "No report card found" });
     }
     console.log(sendedEmailsList);
     return NextResponse.json({ message: "Emails sent", sendedEmailsList });

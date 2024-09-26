@@ -2,14 +2,20 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import StudentData from "@/types/StudentData";
+import { TableStudentData } from "@/types/TableStudentData";
 import ReportCardModal from "@/components/ui/ReportCardModal";
 
-function SendEmailsButton({ initialStudents }: { initialStudents: StudentData[] }) {
+function SendEmailsButton({
+  initialStudents,
+}: {
+  initialStudents: TableStudentData[];
+}) {
   const [isSending, setIsSending] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [students, setStudents] = useState(initialStudents);
-  const [selectedReportCardUrl, setSelectedReportCardUrl] = useState<string | null>(null);
+  const [selectedReportCardUrl, setSelectedReportCardUrl] = useState<
+    string | null
+  >(null);
   const [studentName, setStudentName] = useState<string | null>(null);
 
   const handleSendEmails = async () => {
@@ -27,17 +33,23 @@ function SendEmailsButton({ initialStudents }: { initialStudents: StudentData[] 
 
       if (response.ok) {
         alert(result.message);
-        const updatedStudents = students.map((student: StudentData) => {
-          const emailSentStatus = result.sendedEmailsList.includes(student.email);
+        const updatedStudents = students.map((student: TableStudentData) => {
+          const emailSentStatus = result.sendedEmailsList.includes(
+            student.email
+          );
           return {
             ...student,
-            reportCardSentStatus: emailSentStatus ? "SENT" : student.reportCardSentStatus,
+            reportCardSentStatus: emailSentStatus
+              ? "SENT"
+              : student.reportCardSentStatus,
           };
         });
 
         setStudents(updatedStudents);
       } else {
-        alert(result.message || "Erro ao enviar emails. Sou 'sendEmailsButton'.");
+        alert(
+          result.message || "Erro ao enviar emails. Sou 'sendEmailsButton'."
+        );
       }
     } catch (error) {
       console.error("Erro ao enviar emails:", error);
@@ -47,7 +59,7 @@ function SendEmailsButton({ initialStudents }: { initialStudents: StudentData[] 
     }
   };
 
-  const handleViewReportCard = (student: StudentData) => {
+  const handleViewReportCard = (student: TableStudentData) => {
     const reportCardUrl = `data:application/pdf;base64,${student.reportCardBase64}`;
     setSelectedReportCardUrl(reportCardUrl);
     setStudentName(student.name);
@@ -65,24 +77,53 @@ function SendEmailsButton({ initialStudents }: { initialStudents: StudentData[] 
               <th className="py-3 px-6 border border-gray-300">Semestre</th>
               <th className="py-3 px-6 border border-gray-300">Email</th>
               <th className="py-3 px-6 border border-gray-300">Ver Boletim</th>
-              <th className="py-3 px-6 border border-gray-300">Report Card Sent Status</th>
+              <th className="py-3 px-6 border border-gray-300">
+                Report Card Sent Status
+              </th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
-            {students.map((student: StudentData, index) => (
-              <tr key={student.email} className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100`}>
-                <td className="py-3 px-6 border border-gray-300">{student.name}</td>
-                <td className="py-3 px-6 border border-gray-300">{student.course}</td>
-                <td className="py-3 px-6 border border-gray-300">{student.semester}</td>
-                <td className="py-3 px-6 border border-gray-300">{student.email}</td>
+            {students.map((student: TableStudentData, index) => (
+              <tr
+                key={student.email}
+                className={`${
+                  index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                } hover:bg-gray-100`}
+              >
+                <td className="py-3 px-6 border border-gray-300">
+                  {student.name}
+                </td>
+                <td className="py-3 px-6 border border-gray-300">
+                  {student.course}
+                </td>
+                <td className="py-3 px-6 border border-gray-300">
+                  {student.semester}
+                </td>
+                <td className="py-3 px-6 border border-gray-300">
+                  {student.email}
+                </td>
                 <td
                   onClick={() => handleViewReportCard(student)}
                   className="flex justify-center items-center border py-2 border-gray-300 border-b-0 cursor-pointer"
                 >
-                  <Image src="/static/img/pdf.png" alt="" title="Visualizar Boletim" width={40} height={50} />
+                  <Image
+                    src="/static/img/pdf.png"
+                    alt=""
+                    title="Visualizar Boletim"
+                    width={40}
+                    height={50}
+                  />
                 </td>
-                <td className={`py-3 px-6 border border-gray-300 ${student.reportCardSentStatus === "SENT" ? "text-green-600" : "text-red-600"}`}>
-                  {student.reportCardSentStatus === "SENT" ? "ENVIADO" : "NÃO ENVIADO"}
+                <td
+                  className={`py-3 px-6 border border-gray-300 ${
+                    student.reportCardSentStatus === "SENT"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {student.reportCardSentStatus === "SENT"
+                    ? "ENVIADO"
+                    : "NÃO ENVIADO"}
                 </td>
               </tr>
             ))}
@@ -94,7 +135,11 @@ function SendEmailsButton({ initialStudents }: { initialStudents: StudentData[] 
         <button
           onClick={handleSendEmails}
           disabled={isSending}
-          className={`px-6 py-3 rounded-md text-white ${isSending ? "bg-gray-400 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"} shadow-lg border border-gray-300`}
+          className={`px-6 py-3 rounded-md text-white ${
+            isSending
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-orange-500 hover:bg-orange-600"
+          } shadow-lg border border-gray-300`}
         >
           {isSending ? "Enviando emails..." : "Enviar emails para todos"}
         </button>
