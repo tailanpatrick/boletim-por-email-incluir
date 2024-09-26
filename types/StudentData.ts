@@ -9,6 +9,8 @@ export default interface StudentData {
     average: number; // Média fixa de aprovação
     status: string;
     email: string;
-    reportCard: Blob;
+    reportCard: Blob ;
+    reportCardBase64: string;
+    reportCardSentStatus: string
 }
 

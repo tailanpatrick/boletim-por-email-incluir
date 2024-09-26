@@ -1,10 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+import StudentData from "@/types/StudentData";
+import ReportCardModal from "@/components/ui/ReportCardModal";
 
-function SendEmailsButton({ initialStudents }: { initialStudents: any[] }) {
+function SendEmailsButton({ initialStudents }: { initialStudents: StudentData[] }) {
   const [isSending, setIsSending] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [students, setStudents] = useState(initialStudents);
+  const [selectedReportCardUrl, setSelectedReportCardUrl] = useState<string | null>(null);
+  const [studentName, setStudentName] = useState<string | null>(null);
 
   const handleSendEmails = async () => {
     setIsSending(true);
@@ -21,25 +27,17 @@ function SendEmailsButton({ initialStudents }: { initialStudents: any[] }) {
 
       if (response.ok) {
         alert(result.message);
-        console.log(result.sendEmails, "oi");
-        const updatedStudents = students.map((student) => {
-          const emailSentStatus = result.sendedEmailsList.includes(
-            student.email
-          );
-          if (emailSentStatus) {
-            return {
-              ...student,
-              reportCardSentStatus: "SENT",
-            };
-          }
-          return student;
+        const updatedStudents = students.map((student: StudentData) => {
+          const emailSentStatus = result.sendedEmailsList.includes(student.email);
+          return {
+            ...student,
+            reportCardSentStatus: emailSentStatus ? "SENT" : student.reportCardSentStatus,
+          };
         });
 
         setStudents(updatedStudents);
       } else {
-        alert(
-          result.message || "Erro ao enviar emails. Sou 'sendEmailsButton'."
-        );
+        alert(result.message || "Erro ao enviar emails. Sou 'sendEmailsButton'.");
       }
     } catch (error) {
       console.error("Erro ao enviar emails:", error);
@@ -47,6 +45,13 @@ function SendEmailsButton({ initialStudents }: { initialStudents: any[] }) {
     } finally {
       setIsSending(false);
     }
+  };
+
+  const handleViewReportCard = (student: StudentData) => {
+    const reportCardUrl = `data:application/pdf;base64,${student.reportCardBase64}`;
+    setSelectedReportCardUrl(reportCardUrl);
+    setStudentName(student.name);
+    setIsModalOpen(true);
   };
 
   return (
@@ -57,39 +62,27 @@ function SendEmailsButton({ initialStudents }: { initialStudents: any[] }) {
             <tr>
               <th className="py-3 px-6 border border-gray-300">Name</th>
               <th className="py-3 px-6 border border-gray-300">Course</th>
+              <th className="py-3 px-6 border border-gray-300">Semestre</th>
               <th className="py-3 px-6 border border-gray-300">Email</th>
-              <th className="py-3 px-6 border border-gray-300">
-                Report Card Sent Status
-              </th>
+              <th className="py-3 px-6 border border-gray-300">Ver Boletim</th>
+              <th className="py-3 px-6 border border-gray-300">Report Card Sent Status</th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
-            {students.map((student, index) => (
-              <tr
-                key={student.email}
-                className={`${
-                  index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                } hover:bg-gray-100`}
-              >
-                <td className="py-3 px-6 border border-gray-300">
-                  {student.name}
-                </td>
-                <td className="py-3 px-6 border border-gray-300">
-                  {student.course}
-                </td>
-                <td className="py-3 px-6 border border-gray-300">
-                  {student.email}
-                </td>
+            {students.map((student: StudentData, index) => (
+              <tr key={student.email} className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100`}>
+                <td className="py-3 px-6 border border-gray-300">{student.name}</td>
+                <td className="py-3 px-6 border border-gray-300">{student.course}</td>
+                <td className="py-3 px-6 border border-gray-300">{student.semester}</td>
+                <td className="py-3 px-6 border border-gray-300">{student.email}</td>
                 <td
-                  className={`py-3 px-6 border border-gray-300 ${
-                    student.reportCardSentStatus === "SENT"
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
+                  onClick={() => handleViewReportCard(student)}
+                  className="flex justify-center items-center border py-2 border-gray-300 border-b-0 cursor-pointer"
                 >
-                  {student.reportCardSentStatus === "SENT"
-                    ? "ENVIADO"
-                    : "NÃO ENVIADO"}
+                  <Image src="/static/img/pdf.png" alt="" title="Visualizar Boletim" width={40} height={50} />
+                </td>
+                <td className={`py-3 px-6 border border-gray-300 ${student.reportCardSentStatus === "SENT" ? "text-green-600" : "text-red-600"}`}>
+                  {student.reportCardSentStatus === "SENT" ? "ENVIADO" : "NÃO ENVIADO"}
                 </td>
               </tr>
             ))}
@@ -97,20 +90,22 @@ function SendEmailsButton({ initialStudents }: { initialStudents: any[] }) {
         </table>
       </div>
 
-      {/* Botão fora do div overflow */}
       <div className="sticky bottom-0 bg-white py-4">
         <button
           onClick={handleSendEmails}
           disabled={isSending}
-          className={`px-6 py-3 rounded-md text-white ${
-            isSending
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-orange-500 hover:bg-orange-600"
-          } shadow-lg border border-gray-300`}
+          className={`px-6 py-3 rounded-md text-white ${isSending ? "bg-gray-400 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"} shadow-lg border border-gray-300`}
         >
           {isSending ? "Enviando emails..." : "Enviar emails para todos"}
         </button>
       </div>
+
+      <ReportCardModal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        reportCardUrl={selectedReportCardUrl}
+        studentName={studentName}
+      />
     </>
   );
 }
