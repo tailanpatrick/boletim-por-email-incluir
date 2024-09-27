@@ -75,8 +75,9 @@ function extractData(json: any[]): StudentData[] {
             presence: presence,
             percentPresence: Number(percentPresence) || 0,
             totalPoints: totalPoints || 0,
-            average: passingAverage, // Média fixa para aprovação
-            status: totalPoints >= passingAverage ? 'Aprovado' : 'Reprovado',
+            average: passingAverage, 
+            status: totalPoints >= passingAverage 
+                && percentPresence >= 75 ? 'Aprovado' : 'Reprovado',
             email: email,
         };
     }).slice(4).filter(student => student !== null) as StudentData[];
