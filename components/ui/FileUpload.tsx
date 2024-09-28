@@ -3,8 +3,9 @@ import { useState } from "react";
 import { IoCloudUploadSharp } from "react-icons/io5";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
-import { ToastContainer, toast } from 'react-toastify';
+import { AiOutlineLoading } from "react-icons/ai";
 import Image from "next/image";
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 type FileUploadProps = {
@@ -14,6 +15,7 @@ type FileUploadProps = {
   acceptedType?: string;
   buttonLabel?: string;
   dropzoneText?: string;
+  isLoading: boolean;
 };
 
 export const FileUpload = ({
@@ -23,6 +25,7 @@ export const FileUpload = ({
   acceptedType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   buttonLabel = "Gerar Boletins",
   dropzoneText = "Arraste Aqui ou Selecione a Planilha do seu Computador",
+  isLoading = false
 }: FileUploadProps) => {
   const [fileName, setFileName] = useState<string | null>(null);
   const [fileEnter, setFileEnter] = useState(false);
@@ -32,12 +35,16 @@ export const FileUpload = ({
       setFileName(file.name);
       onFileUpload(file);
       setShowDownloadComponent(false);
+      
     } else {
       toast.error("O formato do arquivo deve ser Xlsx!", {
         style: { fontWeight: 'bold' },
         position: "top-right",
-        autoClose: 5000,  
+        autoClose: 5000,
       });
+  
+      const fileInput = document.getElementById('file') as HTMLInputElement;
+      if (fileInput) fileInput.value = '';
     }
   };
 
@@ -45,11 +52,12 @@ export const FileUpload = ({
     setFileEnter(false);
     setFileName(null);
     setShowDownloadComponent(true);
+
   }
 
   return (
     <div className="container px-4 pt-10 md:pt-0 max-w-5xl mx-auto">
-      <ToastContainer/>
+      <ToastContainer />
       {!fileName ? (
         <div
           onDragOver={(e) => {
@@ -107,10 +115,19 @@ export const FileUpload = ({
             <p className="text-md inline-block mb-16 font-bold">{fileName}</p>
             <button
               onClick={(event) => handleClickGenerateButton(event)}
-              className="px-10 py-6 bg-orange-500 text-white font-semibold rounded-lg shadow-lg hover:bg-orange-600 transition-colors"
+              className="px-10 py-6 bg-orange-500 text-white font-semibold rounded-lg shadow-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2 disabled:bg-slate-400"
+              disabled={isLoading || !fileName}
             >
-              {buttonLabel}
+              {isLoading ? (
+                <div className="flex items-center gap-4">
+                  <p>Gerando Boletins</p>
+                  <AiOutlineLoading className="text-3xl animate-spin" />
+                </div>
+              ) : (
+                buttonLabel
+              )}
             </button>
+
 
           </div>
         </div>
