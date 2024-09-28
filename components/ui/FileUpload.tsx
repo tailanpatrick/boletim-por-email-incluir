@@ -5,8 +5,7 @@ import { FaRegCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { AiOutlineLoading } from "react-icons/ai";
 import Image from "next/image";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toastError, toastDismiss } from "./Toast";
 
 type FileUploadProps = {
   onFileUpload: (file: File) => void;
@@ -35,13 +34,9 @@ export const FileUpload = ({
       setFileName(file.name);
       onFileUpload(file);
       setShowDownloadComponent(false);
-      
+      toastDismiss();
     } else {
-      toast.error("O formato do arquivo deve ser Xlsx!", {
-        style: { fontWeight: 'bold' },
-        position: "top-right",
-        autoClose: 5000,
-      });
+      toastError("O formato do arquivo deve ser Xlsx!");
   
       const fileInput = document.getElementById('file') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
@@ -57,7 +52,7 @@ export const FileUpload = ({
 
   return (
     <div className="container px-4 pt-10 md:pt-0 max-w-5xl mx-auto">
-      <ToastContainer />
+    
       {!fileName ? (
         <div
           onDragOver={(e) => {
