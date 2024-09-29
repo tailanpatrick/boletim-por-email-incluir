@@ -21,12 +21,15 @@ function SendEmailsButton({
   const handleSendEmails = async () => {
     setIsSending(true);
     try {
+      const studentsToSend = students.filter(
+        (student) => student.reportCardSentStatus === "NOT_SENT" //esse filtro está ruim, por algum motivo não consigo colocar um || q funcione
+      );
       const response = await fetch("/api/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ students }),
+        body: JSON.stringify({ students: studentsToSend }),
       });
 
       const result = await response.json();
@@ -59,6 +62,30 @@ function SendEmailsButton({
     }
   };
 
+  const handleSendIndividualEmail = async (student: TableStudentData) => {
+    try {
+      const response = await fetch("/api/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ students: [student] }),
+      });
+      const result = await response.json();
+
+      if (response.ok) {
+        alert(`Email enviado para ${student.name}`);
+      } else {
+        alert(
+          result.message ||
+            "Erro ao enviar email. Sou 'handleSendIndividualEmail'."
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao enviar email:", error);
+      alert("Falha ao enviar email.");
+    }
+  };
   const handleViewReportCard = (student: TableStudentData) => {
     const reportCardUrl = `data:application/pdf;base64,${student.reportCardBase64}`;
     setSelectedReportCardUrl(reportCardUrl);
@@ -121,9 +148,15 @@ function SendEmailsButton({
                       : "text-red-600"
                   }`}
                 >
-                  {student.reportCardSentStatus === "SENT"
-                    ? "ENVIADO"
-                    : "NÃO ENVIADO"}
+                  {student.reportCardSentStatus}
+                </td>
+                <td className="py-3 px-6 border border-gray-300">
+                  <button
+                    onClick={() => handleSendIndividualEmail(student)}
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                  >
+                    Enviar Email
+                  </button>
                 </td>
               </tr>
             ))}

@@ -1,4 +1,3 @@
-
 import Navbar from "@/components/Navbar";
 import SendEmailsButton from "./sendEmailsTable";
 import prismaClient from "@/lib/prisma-client";
@@ -7,12 +6,6 @@ const prisma = prismaClient;
 
 export default async function StudentsPage() {
   const students = await prisma.student.findMany({
-    where: {
-      reportCardSentStatus: "NOT_SENT",
-      sendTryCount: {
-        lt: 4,
-      },
-    },
     select: {
       id: true,
       name: true,
@@ -25,10 +18,10 @@ export default async function StudentsPage() {
   });
 
   // Mapeia os estudantes para adicionar reportCardBase64
-  const modifiedStudents = students.map(student => ({
+  const modifiedStudents = students.map((student) => ({
     ...student,
-    reportCard: null, 
-    reportCardBase64: Buffer.from(student.reportCard).toString('base64'), // Adiciona a versão Base64
+    reportCard: null,
+    reportCardBase64: Buffer.from(student.reportCard).toString("base64"), // Adiciona a versão Base64
   }));
 
   return (
