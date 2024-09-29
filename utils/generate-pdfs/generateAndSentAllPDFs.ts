@@ -2,7 +2,6 @@ import generatePDF from '@/utils/generate-pdfs/generatePDF';
 import loadData from '@/utils/generate-pdfs/loadData';
 import extractData from '@/utils/generate-pdfs/extractData';
 import persistStudantsInJson from '@/utils/generate-pdfs/persistStudantsInJson';
-import savePDF from '../savePDF';
 import { CreateReportCardService } from '@/services/CreateReportCardService';
 
 export async function generateAndSentAllPDFs(xlsxFileBuffer: Buffer) {
@@ -29,5 +28,5 @@ export async function generateAndSentAllPDFs(xlsxFileBuffer: Buffer) {
         }
     });
     
-    Promise.all(promises);
+    await Promise.all(promises);
 }

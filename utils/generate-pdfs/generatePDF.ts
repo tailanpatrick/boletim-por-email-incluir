@@ -9,12 +9,12 @@ async function generatePDF(studentId: string): Promise<Buffer> {
 
   await page.setViewport({
     width: 400,
-    height: 1100,
+    height: 1120,
   });
 
   const url = `http://localhost:3000/report/${studentId}`;
 
-  await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
+  await page.goto(url, { waitUntil: "networkidle2", timeout: 90000 });
 
   const pdfBuffer = await page.pdf({
     printBackground: true,
@@ -25,7 +25,7 @@ async function generatePDF(studentId: string): Promise<Buffer> {
       left: '0mm',         // Margem esquerda
       right: '0mm'
     },
-    height: '1100px'
+    height: '1120px'
   });
 
   await browser.close();
