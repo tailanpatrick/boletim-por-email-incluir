@@ -1,32 +1,28 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { TableStudentData } from "@/types/TableStudentData";
 import ReportCardModal from "@/components/ui/ReportCardModal";
+import { FaEdit, FaCheck, FaTimes } from "react-icons/fa";
+import { toastError, toastSuccess } from "@/components/ui/Toast";
 
-function SendEmailsButton({
-  initialStudents,
-}: {
-  initialStudents: TableStudentData[];
-}) {
+function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentData[] }) {
   const [isSending, setIsSending] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [students, setStudents] = useState(initialStudents);
-  const [selectedReportCardUrl, setSelectedReportCardUrl] = useState<
-    string | null
-  >(null);
+  const [selectedReportCardUrl, setSelectedReportCardUrl] = useState<string | null>(null);
   const [studentName, setStudentName] = useState<string | null>(null);
-  const emailInputRef = useRef<HTMLInputElement | null>(null);
+  const [editingEmail, setEditingEmail] = useState<string | null>(null);
+  const [emailValue, setEmailValue] = useState<string>("");
 
   const handleSendEmails = async () => {
     setIsSending(true);
     try {
       const studentsToSend = students.filter(
         (student) =>
-          student.reportCardSentStatus === "NOT_SENT" &&
+          (student.reportCardSentStatus === "NOT_SENT" || student.reportCardSentStatus === "ERROR_SENT") &&
           student.sendTryCount < 4
-        //esse filtro está ruim, por algum motivo não consigo colocar um || q funcione. gostaria de algo tipo ("NOT_SENT||"ERROR_SENT") && student.sendTryCount < 4
       );
       const response = await fetch("/api/send", {
         method: "POST",
@@ -39,28 +35,22 @@ function SendEmailsButton({
       const result = await response.json();
 
       if (response.ok) {
-        alert(result.message);
+        toastError(result.message);
         const updatedStudents = students.map((student: TableStudentData) => {
-          const emailSentStatus = result.sendedEmailsList.includes(
-            student.email
-          );
+          const emailSentStatus = result.sendedEmailsList.includes(student.email);
           return {
             ...student,
-            reportCardSentStatus: emailSentStatus
-              ? "SENT"
-              : student.reportCardSentStatus,
+            reportCardSentStatus: emailSentStatus ? "SENT" : student.reportCardSentStatus,
           };
         });
 
         setStudents(updatedStudents);
       } else {
-        alert(
-          result.message || "Erro ao enviar emails. Sou 'sendEmailsButton'."
-        );
+        toastError(result.message || "Erro ao enviar emails. Sou 'sendEmailsButton'.");
       }
     } catch (error) {
       console.error("Erro ao enviar emails:", error);
-      alert("Falha ao enviar emails.");
+      toastError("Falha ao enviar emails.");
     } finally {
       setIsSending(false);
     }
@@ -78,36 +68,24 @@ function SendEmailsButton({
       const result = await response.json();
 
       if (response.ok) {
-        alert(`Email enviado para ${student.name}`);
+        toastSuccess(`Email enviado para ${student.name}`);
       } else {
-        alert(
-          result.message ||
-            "Erro ao enviar email. Sou 'handleSendIndividualEmail'."
-        );
+        toastError(result.message || "Erro ao enviar email. Sou 'handleSendIndividualEmail'.");
       }
     } catch (error) {
       console.error("Erro ao enviar email:", error);
-      alert("Falha ao enviar email.");
+      toastError("Falha ao enviar email.");
     }
   };
+
   const handleViewReportCard = (student: TableStudentData) => {
     const reportCardUrl = `data:application/pdf;base64,${student.reportCardBase64}`;
     setSelectedReportCardUrl(reportCardUrl);
     setStudentName(student.name);
     setIsModalOpen(true);
   };
-  const handleEmailLocalChange = (studentID: string, newEmail: string) => {
-    setStudents((prevStudents) =>
-      prevStudents.map((student) => {
-        if (student.id === studentID) {
-          return { ...student, email: newEmail };
-        }
-        return student;
-      })
-    );
-  };
+
   const handleEmailChange = async (studentID: string, newEmail: string) => {
-    handleEmailLocalChange(studentID, newEmail);
     try {
       const response = await fetch("/api/updateEmail", {
         method: "POST",
@@ -118,14 +96,35 @@ function SendEmailsButton({
       });
       const result = await response.json();
       if (!response.ok) {
-        alert(
-          result.message || "Erro ao atualizar email. Sou 'handleEmailChange'."
-        );
+        toastError(result.message || "Erro ao atualizar email. Sou 'handleEmailChange'.");
       }
     } catch (error) {
       console.error("Erro ao atualizar email:", error);
-      alert("Falha ao atualizar email.");
+      toastError("Falha ao atualizar email.");
     }
+  };
+
+  const startEditing = (studentID: string, currentEmail: string) => {
+    setEditingEmail(studentID);
+    setEmailValue(currentEmail);
+  };
+
+  const confirmEdit = (student: TableStudentData) => {
+    setStudents((prevStudents) => {
+      const updatedStudents = prevStudents.map((s) =>
+        s.id === student.id ? { ...s, email: emailValue } : s
+      );
+
+      return updatedStudents;
+    });
+
+    handleEmailChange(student.id, emailValue);
+    setEditingEmail(null);
+  };
+
+
+  const cancelEdit = () => {
+    setEditingEmail(null);
   };
 
   return (
@@ -139,62 +138,49 @@ function SendEmailsButton({
               <th className="py-3 px-6 border border-gray-300">Semestre</th>
               <th className="py-3 px-6 border border-gray-300">Email</th>
               <th className="py-3 px-6 border border-gray-300">Ver Boletim</th>
-              <th className="py-3 px-6 border border-gray-300">
-                Email Send Status
-              </th>
+              <th className="py-3 px-6 border border-gray-300">Email Send Status</th>
+              <th className="py-3 px-6 border border-gray-300">Envio Individual</th>
+
             </tr>
           </thead>
           <tbody className="text-gray-700">
             {students.map((student: TableStudentData, index) => (
-              <tr
-                key={student.email}
-                className={`${
-                  index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                } hover:bg-gray-100`}
-              >
+              <tr key={student.id} className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100`}>
+                <td className="py-3 px-6 border border-gray-300">{student.name}</td>
+                <td className="py-3 px-6 border border-gray-300">{student.course}</td>
+                <td className="py-3 px-6 border border-gray-300">{student.semester}</td>
                 <td className="py-3 px-6 border border-gray-300">
-                  {student.name}
-                </td>
-                <td className="py-3 px-6 border border-gray-300">
-                  {student.course}
-                </td>
-                <td className="py-3 px-6 border border-gray-300">
-                  {student.semester}
-                </td>
-                <td className="py-3 px-6 border border-gray-300">
-                  <input
-                    type="email"
-                    value={student.email}
-                    ref={emailInputRef}
-                    onChange={(e) =>
-                      handleEmailLocalChange(student.id, e.target.value)
-                    }
-                    onBlur={(e) => handleEmailChange(student.id, student.email)}
-                    className="border border-gray-300 p-2"
-                  />
+                  {editingEmail === student.id ? (
+                    <div className="flex items-center">
+                      <input
+                        type="email"
+                        value={emailValue}
+                        onChange={(e) => setEmailValue(e.target.value)}
+                        className="border border-gray-300 p-2 mr-5"
+                      />
+                      <FaCheck onClick={() => confirmEdit(student)} className="cursor-pointer text-green-600 text-xl mx-3" />
+                      <FaTimes onClick={cancelEdit} className="cursor-pointer text-red-600 text-xl" />
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <span className="px-4">{student.email}</span>
+                      {student.reportCardSentStatus === "SENT" || student.reportCardSentStatus && (
+                        <FaEdit
+                          onClick={() => startEditing(student.id, student.email)}
+                          className="cursor-pointer text-xl ml-2 text-blue-600"
+                        />
+                      )}
+                    </div>
+                  )}
                 </td>
                 <td
                   onClick={() => handleViewReportCard(student)}
                   className="flex justify-center items-center border py-2 border-gray-300 border-b-0 cursor-pointer"
                 >
-                  <Image
-                    src="/static/img/pdf.png"
-                    alt=""
-                    title="Visualizar Boletim"
-                    width={40}
-                    height={50}
-                  />
+                  <Image src="/static/img/pdf.png" alt="Visualizar Boletim" title="Visualizar Boletim" width={40} height={50} />
                 </td>
-                <td
-                  className={`py-3 px-6 border border-gray-300 ${
-                    student.reportCardSentStatus === "SENT"
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {student.sendTryCount < 4
-                    ? student.reportCardSentStatus
-                    : "Tentativas excedidas"}
+                <td className={`py-3 px-6 border border-gray-300 ${student.reportCardSentStatus === "SENT" ? "text-green-600" : "text-red-600"}`}>
+                  {student.sendTryCount < 4 ? student.reportCardSentStatus : "Tentativas excedidas"}
                 </td>
                 <td className="py-3 px-6 border border-gray-300">
                   <button
@@ -214,11 +200,7 @@ function SendEmailsButton({
         <button
           onClick={handleSendEmails}
           disabled={isSending}
-          className={`px-6 py-3 rounded-md text-white ${
-            isSending
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-orange-500 hover:bg-orange-600"
-          } shadow-lg border border-gray-300`}
+          className={`px-6 py-3 rounded-md text-white ${isSending ? "bg-gray-400 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"} shadow-lg border border-gray-300`}
         >
           {isSending ? "Enviando emails..." : "Enviar emails para todos"}
         </button>

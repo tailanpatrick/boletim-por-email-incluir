@@ -15,24 +15,25 @@ export default async function StudentsPage() {
       reportCard: true,
       sendTryCount: true,
       reportCardSentStatus: true,
-    },
+    }, 
     orderBy: {
-      name: "asc"
+      name: 'asc'
     }
   });
 
   // Mapeia os estudantes para adicionar reportCardBase64
-  const modifiedStudents = students.map((student) => ({
+  const modifiedStudents = students
+  .map((student) => ({
     ...student,
     reportCard: null,
-    reportCardBase64: Buffer.from(student.reportCard).toString("base64"), // Adiciona a versão Base64
+    reportCardBase64: Buffer.from(student.reportCard).toString("base64"),
   }));
 
   return (
     <>
       <Navbar />
       <div className="flex flex-col gap-3 md:p-20 w-full">
-        {/* Passa modifiedStudents como props para o componente do cliente */}
+
         <SendEmailsButton initialStudents={modifiedStudents} />
       </div>
     </>
