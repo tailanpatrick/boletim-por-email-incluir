@@ -141,7 +141,7 @@ function SendEmailsButton({
           <tbody className="text-gray-700">
             {students.map((student: TableStudentData, index) => (
               <tr
-                key={student.email}
+                key={student.id}
                 className={`${
                   index % 2 === 0 ? "bg-gray-50" : "bg-white"
                 } hover:bg-gray-100`}

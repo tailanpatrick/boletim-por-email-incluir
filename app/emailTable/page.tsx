@@ -16,6 +16,9 @@ export default async function StudentsPage() {
       sendTryCount: true,
       reportCardSentStatus: true,
     },
+    orderBy: {
+      reportCardSentStatus: "asc",
+    },
   });
 
   // Mapeia os estudantes para adicionar reportCardBase64
