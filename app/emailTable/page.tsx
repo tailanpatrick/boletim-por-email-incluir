@@ -13,6 +13,7 @@ export default async function StudentsPage() {
       email: true,
       semester: true,
       reportCard: true,
+      sendTryCount: true,
       reportCardSentStatus: true,
     },
   });

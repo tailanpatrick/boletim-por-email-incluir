@@ -6,4 +6,5 @@ export interface TableStudentData {
   email: string;
   reportCardSentStatus: string;
   reportCardBase64: string;
+  sendTryCount: number;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { TableStudentData } from "@/types/TableStudentData";
 import ReportCardModal from "@/components/ui/ReportCardModal";
@@ -17,12 +17,16 @@ function SendEmailsButton({
     string | null
   >(null);
   const [studentName, setStudentName] = useState<string | null>(null);
+  const emailInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleSendEmails = async () => {
     setIsSending(true);
     try {
       const studentsToSend = students.filter(
-        (student) => student.reportCardSentStatus === "NOT_SENT" //esse filtro está ruim, por algum motivo não consigo colocar um || q funcione
+        (student) =>
+          student.reportCardSentStatus === "NOT_SENT" &&
+          student.sendTryCount < 4
+        //esse filtro está ruim, por algum motivo não consigo colocar um || q funcione. gostaria de algo tipo ("NOT_SENT||"ERROR_SENT") && student.sendTryCount < 4
       );
       const response = await fetch("/api/send", {
         method: "POST",
@@ -92,6 +96,37 @@ function SendEmailsButton({
     setStudentName(student.name);
     setIsModalOpen(true);
   };
+  const handleEmailLocalChange = (studentID: string, newEmail: string) => {
+    setStudents((prevStudents) =>
+      prevStudents.map((student) => {
+        if (student.id === studentID) {
+          return { ...student, email: newEmail };
+        }
+        return student;
+      })
+    );
+  };
+  const handleEmailChange = async (studentID: string, newEmail: string) => {
+    handleEmailLocalChange(studentID, newEmail);
+    try {
+      const response = await fetch("/api/updateEmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: studentID, email: newEmail }),
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        alert(
+          result.message || "Erro ao atualizar email. Sou 'handleEmailChange'."
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar email:", error);
+      alert("Falha ao atualizar email.");
+    }
+  };
 
   return (
     <>
@@ -105,7 +140,7 @@ function SendEmailsButton({
               <th className="py-3 px-6 border border-gray-300">Email</th>
               <th className="py-3 px-6 border border-gray-300">Ver Boletim</th>
               <th className="py-3 px-6 border border-gray-300">
-                Report Card Sent Status
+                Email Send Status
               </th>
             </tr>
           </thead>
@@ -127,7 +162,16 @@ function SendEmailsButton({
                   {student.semester}
                 </td>
                 <td className="py-3 px-6 border border-gray-300">
-                  {student.email}
+                  <input
+                    type="email"
+                    value={student.email}
+                    ref={emailInputRef}
+                    onChange={(e) =>
+                      handleEmailLocalChange(student.id, e.target.value)
+                    }
+                    onBlur={(e) => handleEmailChange(student.id, student.email)}
+                    className="border border-gray-300 p-2"
+                  />
                 </td>
                 <td
                   onClick={() => handleViewReportCard(student)}
@@ -148,7 +192,9 @@ function SendEmailsButton({
                       : "text-red-600"
                   }`}
                 >
-                  {student.reportCardSentStatus}
+                  {student.sendTryCount < 4
+                    ? student.reportCardSentStatus
+                    : "Tentativas excedidas"}
                 </td>
                 <td className="py-3 px-6 border border-gray-300">
                   <button
