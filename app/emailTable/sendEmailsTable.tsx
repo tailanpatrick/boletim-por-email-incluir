@@ -18,6 +18,7 @@ function SendEmailsButton({
   >(null);
   const [studentName, setStudentName] = useState<string | null>(null);
   const emailInputRef = useRef<HTMLInputElement | null>(null);
+  const [localEmail, setLocalEmail] = useState<{ [key: string]: string }>({});
 
   const handleSendEmails = async () => {
     setIsSending(true);
@@ -97,6 +98,9 @@ function SendEmailsButton({
     setIsModalOpen(true);
   };
   const handleEmailLocalChange = (studentID: string, newEmail: string) => {
+    setLocalEmail((prev) => ({ ...prev, [studentID]: newEmail }));
+  };
+  const handleEmailChange = async (studentID: string, newEmail: string) => {
     setStudents((prevStudents) =>
       prevStudents.map((student) => {
         if (student.id === studentID) {
@@ -105,9 +109,6 @@ function SendEmailsButton({
         return student;
       })
     );
-  };
-  const handleEmailChange = async (studentID: string, newEmail: string) => {
-    handleEmailLocalChange(studentID, newEmail);
     try {
       const response = await fetch("/api/updateEmail", {
         method: "POST",
@@ -164,7 +165,7 @@ function SendEmailsButton({
                 <td className="py-3 px-6 border border-gray-300">
                   <input
                     type="email"
-                    value={student.email}
+                    value={localEmail[student.id] || student.email}
                     ref={emailInputRef}
                     onChange={(e) =>
                       handleEmailLocalChange(student.id, e.target.value)
