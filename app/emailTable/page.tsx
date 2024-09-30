@@ -25,14 +25,13 @@ export default async function StudentsPage() {
   const modifiedStudents = students.map((student) => ({
     ...student,
     reportCard: null,
-    reportCardBase64: Buffer.from(student.reportCard).toString("base64"), // Adiciona a versão Base64
+    reportCardBase64: Buffer.from(student.reportCard).toString("base64"),
   }));
 
   return (
     <>
       <Navbar />
       <div className="flex flex-col gap-3 md:p-20 w-full">
-        {/* Passa modifiedStudents como props para o componente do cliente */}
         <SendEmailsButton initialStudents={modifiedStudents} />
       </div>
     </>

@@ -4,6 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { TableStudentData } from "@/types/TableStudentData";
 import ReportCardModal from "@/components/ui/ReportCardModal";
+import { FaEdit, FaCheck, FaTimes } from "react-icons/fa";
+import { toastError, toastSuccess } from "@/components/ui/Toast";
 
 function SendEmailsButton({
   initialStudents,
@@ -17,7 +19,8 @@ function SendEmailsButton({
     string | null
   >(null);
   const [studentName, setStudentName] = useState<string | null>(null);
-  const [localEmail, setLocalEmail] = useState<{ [key: string]: string }>({});
+  const [editingEmail, setEditingEmail] = useState<string | null>(null);
+  const [emailValue, setEmailValue] = useState<string>("");
 
   const handleSendEmails = async () => {
     setIsSending(true);
@@ -39,7 +42,7 @@ function SendEmailsButton({
       const result = await response.json();
 
       if (response.ok) {
-        alert(result.message);
+        toastSuccess(result.message);
         const updatedStudents = students.map((student: TableStudentData) => {
           const emailSentStatus = result.sendedEmailsList.includes(
             student.email
@@ -54,13 +57,13 @@ function SendEmailsButton({
 
         setStudents(updatedStudents);
       } else {
-        alert(
+        toastError(
           result.message || "Erro ao enviar emails. Sou 'sendEmailsButton'."
         );
       }
     } catch (error) {
       console.error("Erro ao enviar emails:", error);
-      alert("Falha ao enviar emails.");
+      toastError("Falha ao enviar emails.");
     } finally {
       setIsSending(false);
     }
@@ -78,30 +81,27 @@ function SendEmailsButton({
       const result = await response.json();
 
       if (response.ok) {
-        alert(`Email enviado para ${student.name}`);
+        toastSuccess(`Email enviado para ${student.name}`);
       } else {
-        alert(
+        toastError(
           result.message ||
             "Erro ao enviar email. Sou 'handleSendIndividualEmail'."
         );
       }
     } catch (error) {
       console.error("Erro ao enviar email:", error);
-      alert("Falha ao enviar email.");
+      toastError("Falha ao enviar email.");
     }
   };
+
   const handleViewReportCard = (student: TableStudentData) => {
     const reportCardUrl = `data:application/pdf;base64,${student.reportCardBase64}`;
     setSelectedReportCardUrl(reportCardUrl);
     setStudentName(student.name);
     setIsModalOpen(true);
   };
-  const handleEmailLocalChange = (studentID: string, newEmail: string) => {
-    setLocalEmail((prev) => ({ ...prev, [studentID]: newEmail }));
-  };
-  const handleEmailChange = async (studentID: string) => {
-    const newEmail = localEmail[studentID] || "";
 
+  const handleEmailChange = async (studentID: string, newEmail: string) => {
     try {
       const response = await fetch("/api/updateEmail", {
         method: "POST",
@@ -112,14 +112,38 @@ function SendEmailsButton({
       });
       const result = await response.json();
       if (!response.ok) {
-        alert(
+        toastError(
           result.message || "Erro ao atualizar email. Sou 'handleEmailChange'."
         );
+      } else {
+        toastSuccess(result.message);
       }
     } catch (error) {
       console.error("Erro ao atualizar email:", error);
-      alert("Falha ao atualizar email.");
+      toastError("Falha ao atualizar email.");
     }
+  };
+
+  const startEditing = (studentID: string, currentEmail: string) => {
+    setEditingEmail(studentID);
+    setEmailValue(currentEmail);
+  };
+
+  const confirmEdit = (student: TableStudentData) => {
+    setStudents((prevStudents) => {
+      const updatedStudents = prevStudents.map((s) =>
+        s.id === student.id ? { ...s, email: emailValue } : s
+      );
+
+      return updatedStudents;
+    });
+
+    handleEmailChange(student.id, emailValue);
+    setEditingEmail(null);
+  };
+
+  const cancelEdit = () => {
+    setEditingEmail(null);
   };
 
   return (
@@ -135,6 +159,9 @@ function SendEmailsButton({
               <th className="py-3 px-6 border border-gray-300">Ver Boletim</th>
               <th className="py-3 px-6 border border-gray-300">
                 Email Send Status
+              </th>
+              <th className="py-3 px-6 border border-gray-300">
+                Envio Individual
               </th>
             </tr>
           </thead>
@@ -156,15 +183,36 @@ function SendEmailsButton({
                   {student.semester}
                 </td>
                 <td className="py-3 px-6 border border-gray-300">
-                  <input
-                    type="email"
-                    value={localEmail[student.id] || student.email}
-                    onChange={(e) =>
-                      handleEmailLocalChange(student.id, e.target.value)
-                    }
-                    onBlur={(e) => handleEmailChange(student.id)}
-                    className=" border-gray-300 p-2 border-0"
-                  />
+                  {editingEmail === student.id ? (
+                    <div className="flex items-center">
+                      <input
+                        type="email"
+                        value={emailValue}
+                        onChange={(e) => setEmailValue(e.target.value)}
+                        className="border border-gray-300 p-2 mr-5"
+                      />
+                      <FaCheck
+                        onClick={() => confirmEdit(student)}
+                        className="cursor-pointer text-green-600 text-xl mx-3"
+                      />
+                      <FaTimes
+                        onClick={cancelEdit}
+                        className="cursor-pointer text-red-600 text-xl"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <span className="px-4">{student.email}</span>
+                      {student.reportCardSentStatus && (
+                        <FaEdit
+                          onClick={() =>
+                            startEditing(student.id, student.email)
+                          }
+                          className="cursor-pointer text-xl ml-2 text-blue-600"
+                        />
+                      )}
+                    </div>
+                  )}
                 </td>
                 <td
                   onClick={() => handleViewReportCard(student)}
@@ -172,7 +220,7 @@ function SendEmailsButton({
                 >
                   <Image
                     src="/static/img/pdf.png"
-                    alt=""
+                    alt="Visualizar Boletim"
                     title="Visualizar Boletim"
                     width={40}
                     height={50}
@@ -180,7 +228,8 @@ function SendEmailsButton({
                 </td>
                 <td
                   className={`py-3 px-6 border border-gray-300 ${
-                    student.reportCardSentStatus === "SENT"
+                    student.reportCardSentStatus === "SENT" &&
+                    student.sendTryCount < 4
                       ? "text-green-600"
                       : "text-red-600"
                   }`}

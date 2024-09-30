@@ -84,7 +84,6 @@ class EmailService {
 export async function POST(req: NextRequest, res: NextResponse) {
   const emailService = new EmailService();
   try {
-    console.log("Request received at /api/send");
     const { students } = await req.json();
     const sendedEmailsList: string[] = [];
 
