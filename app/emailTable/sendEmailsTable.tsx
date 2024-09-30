@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { TableStudentData } from "@/types/TableStudentData";
 import ReportCardModal from "@/components/ui/ReportCardModal";
@@ -17,7 +17,6 @@ function SendEmailsButton({
     string | null
   >(null);
   const [studentName, setStudentName] = useState<string | null>(null);
-  const emailInputRef = useRef<HTMLInputElement | null>(null);
   const [localEmail, setLocalEmail] = useState<{ [key: string]: string }>({});
 
   const handleSendEmails = async () => {
@@ -109,6 +108,7 @@ function SendEmailsButton({
         return student;
       })
     );
+
     try {
       const response = await fetch("/api/updateEmail", {
         method: "POST",
@@ -166,7 +166,6 @@ function SendEmailsButton({
                   <input
                     type="email"
                     value={localEmail[student.id] || student.email}
-                    ref={emailInputRef}
                     onChange={(e) =>
                       handleEmailLocalChange(student.id, e.target.value)
                     }
