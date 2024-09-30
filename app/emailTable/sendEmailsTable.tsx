@@ -170,7 +170,7 @@ function SendEmailsButton({
                       handleEmailLocalChange(student.id, e.target.value)
                     }
                     onBlur={(e) => handleEmailChange(student.id, student.email)}
-                    className="border border-gray-300 p-2"
+                    className=" border-gray-300 p-2 border-0"
                   />
                 </td>
                 <td
