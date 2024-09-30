@@ -24,9 +24,9 @@ function SendEmailsButton({
     try {
       const studentsToSend = students.filter(
         (student) =>
-          student.reportCardSentStatus === "NOT_SENT" &&
+          (student.reportCardSentStatus === "NOT_SENT" ||
+            student.reportCardSentStatus === "ERROR_SENT") &&
           student.sendTryCount < 4
-        //esse filtro está ruim, por algum motivo não consigo colocar um || q funcione. gostaria de algo tipo ("NOT_SENT||"ERROR_SENT") && student.sendTryCount < 4
       );
       const response = await fetch("/api/send", {
         method: "POST",
@@ -99,15 +99,8 @@ function SendEmailsButton({
   const handleEmailLocalChange = (studentID: string, newEmail: string) => {
     setLocalEmail((prev) => ({ ...prev, [studentID]: newEmail }));
   };
-  const handleEmailChange = async (studentID: string, newEmail: string) => {
-    setStudents((prevStudents) =>
-      prevStudents.map((student) => {
-        if (student.id === studentID) {
-          return { ...student, email: newEmail };
-        }
-        return student;
-      })
-    );
+  const handleEmailChange = async (studentID: string) => {
+    const newEmail = localEmail[studentID] || "";
 
     try {
       const response = await fetch("/api/updateEmail", {
@@ -169,7 +162,7 @@ function SendEmailsButton({
                     onChange={(e) =>
                       handleEmailLocalChange(student.id, e.target.value)
                     }
-                    onBlur={(e) => handleEmailChange(student.id, student.email)}
+                    onBlur={(e) => handleEmailChange(student.id)}
                     className=" border-gray-300 p-2 border-0"
                   />
                 </td>
