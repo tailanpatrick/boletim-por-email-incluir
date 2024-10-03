@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { TableStudentData } from "@/types/TableStudentData";
 import ReportCardModal from "@/components/ui/ReportCardModal";
@@ -96,7 +96,7 @@ function SendEmailsButton({
       } else {
         toastError(
           result.message ||
-            "Erro ao enviar email. Sou 'handleSendIndividualEmail'."
+          "Erro ao enviar email. Sou 'handleSendIndividualEmail'."
         );
       }
     } catch (error) {
@@ -160,6 +160,13 @@ function SendEmailsButton({
     setEditingEmail(null);
   };
 
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (editingEmail && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [editingEmail]);
   return (
     <>
       <div className="overflow-x-auto rounded-lg">
@@ -183,9 +190,8 @@ function SendEmailsButton({
             {students.map((student: TableStudentData, index) => (
               <tr
                 key={student.id}
-                className={`${
-                  index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                } hover:bg-gray-100`}
+                className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                  } hover:bg-gray-100`}
               >
                 <td className="py-3 px-6 border border-gray-300">
                   {student.name}
@@ -200,13 +206,23 @@ function SendEmailsButton({
                   {editingEmail === student.id ? (
                     <div className="flex items-center">
                       <input
+                        ref={inputRef}
                         type="email"
                         value={emailValue}
                         onChange={(e) => setEmailValue(e.target.value)}
+                        onKeyUp={(e) => {
+                          if (e.key === 'Enter') {
+                            confirmEdit(student)
+                          }
+                          if (e.key === 'Escape') {
+                            cancelEdit();
+                          }
+                        }}
                         className="border border-gray-300 p-2 mr-5"
+                        key={student.id}
                       />
                       <FaCheck
-                        onClick={() => confirmEdit(student)}
+                        onClick={() => { confirmEdit(student) }}
                         className="cursor-pointer text-green-600 text-xl mx-3"
                       />
                       <FaTimes
@@ -219,9 +235,9 @@ function SendEmailsButton({
                       <span className="px-4">{student.email}</span>
                       {student.reportCardSentStatus && (
                         <FaEdit
-                          onClick={() =>
+                          onClick={() => {
                             startEditing(student.id, student.email)
-                          }
+                          }}
                           className="cursor-pointer text-xl ml-2 text-blue-600"
                         />
                       )}
@@ -241,12 +257,11 @@ function SendEmailsButton({
                   />
                 </td>
                 <td
-                  className={`py-3 px-6 border border-gray-300 ${
-                    student.reportCardSentStatus === "SENT" &&
+                  className={`py-3 px-6 border border-gray-300 ${student.reportCardSentStatus === "SENT" &&
                     student.sendTryCount < 4
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
+                    ? "text-green-600"
+                    : "text-red-600"
+                    }`}
                 >
                   {student.sendTryCount < 4
                     ? student.reportCardSentStatus
@@ -270,11 +285,10 @@ function SendEmailsButton({
         <button
           onClick={handleSendEmails}
           disabled={isSending}
-          className={`px-6 py-3 rounded-md text-white ${
-            isSending
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-orange-500 hover:bg-orange-600"
-          } shadow-lg border border-gray-300`}
+          className={`px-6 py-3 rounded-md text-white ${isSending
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-orange-500 hover:bg-orange-600"
+            } shadow-lg border border-gray-300`}
         >
           {isSending ? "Enviando emails..." : "Enviar emails para todos"}
         </button>
