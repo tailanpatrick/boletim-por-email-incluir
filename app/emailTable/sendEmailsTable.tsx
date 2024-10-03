@@ -130,7 +130,7 @@ function SendEmailsButton({
           result.message || "Erro ao atualizar email. Sou 'handleEmailChange'."
         );
       } else {
-        toastSuccess(result.message);
+        toastSuccess("Email com atualizado com sucesso");
       }
     } catch (error) {
       console.error("Erro ao atualizar email:", error);
