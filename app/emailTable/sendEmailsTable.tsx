@@ -6,6 +6,7 @@ import { TableStudentData } from "@/types/TableStudentData";
 import ReportCardModal from "@/components/ui/ReportCardModal";
 import { FaEdit, FaCheck, FaTimes } from "react-icons/fa";
 import { toastError, toastSuccess } from "@/components/ui/Toast";
+import { ReportCardStatus } from "@prisma/client";
 
 function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentData[] }) {
   const [isSending, setIsSending] = useState(false);
@@ -35,7 +36,7 @@ function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentDa
       const result = await response.json();
 
       if (response.ok) {
-        toastError(result.message);
+        toastSuccess("Emails enviados");
         const updatedStudents = students.map((student: TableStudentData) => {
           const emailSentStatus = result.sendedEmailsList.includes(student.email);
           return {
@@ -56,7 +57,12 @@ function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentDa
     }
   };
 
-  const handleSendIndividualEmail = async (student: TableStudentData) => {
+  const handleSendIndividualEmail = async (
+    student: TableStudentData,
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    const buttonEmail = e.currentTarget as HTMLButtonElement;
+    buttonEmail.disabled = true;
     try {
       const response = await fetch("/api/send", {
         method: "POST",
@@ -68,6 +74,11 @@ function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentDa
       const result = await response.json();
 
       if (response.ok) {
+        setStudents(students.map((actualStudent) =>
+          actualStudent.id === student.id
+            ? { ...actualStudent, reportCardSentStatus: "SENT" }
+            : actualStudent
+        ));
         toastSuccess(`Email enviado para ${student.name}`);
       } else {
         toastError(result.message || "Erro ao enviar email. Sou 'handleSendIndividualEmail'.");
@@ -75,8 +86,11 @@ function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentDa
     } catch (error) {
       console.error("Erro ao enviar email:", error);
       toastError("Falha ao enviar email.");
+    } finally {
+      buttonEmail.disabled = false;
     }
   };
+
 
   const handleViewReportCard = (student: TableStudentData) => {
     const reportCardUrl = `data:application/pdf;base64,${student.reportCardBase64}`;
@@ -184,8 +198,8 @@ function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentDa
                 </td>
                 <td className="py-3 px-6 border border-gray-300">
                   <button
-                    onClick={() => handleSendIndividualEmail(student)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                    onClick={(e) => handleSendIndividualEmail(student, e)}
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded disabled:bg-gray-400"
                   >
                     Enviar Email
                   </button>
