@@ -8,11 +8,17 @@ import { FaEdit, FaCheck, FaTimes } from "react-icons/fa";
 import { toastError, toastSuccess } from "@/components/ui/Toast";
 import { ReportCardStatus } from "@prisma/client";
 
-function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentData[] }) {
+function SendEmailsButton({
+  initialStudents,
+}: {
+  initialStudents: TableStudentData[];
+}) {
   const [isSending, setIsSending] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [students, setStudents] = useState(initialStudents);
-  const [selectedReportCardUrl, setSelectedReportCardUrl] = useState<string | null>(null);
+  const [selectedReportCardUrl, setSelectedReportCardUrl] = useState<
+    string | null
+  >(null);
   const [studentName, setStudentName] = useState<string | null>(null);
   const [editingEmail, setEditingEmail] = useState<string | null>(null);
   const [emailValue, setEmailValue] = useState<string>("");
@@ -22,7 +28,8 @@ function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentDa
     try {
       const studentsToSend = students.filter(
         (student) =>
-          (student.reportCardSentStatus === "NOT_SENT" || student.reportCardSentStatus === "ERROR_SENT") &&
+          (student.reportCardSentStatus === "NOT_SENT" ||
+            student.reportCardSentStatus === "ERROR_SENT") &&
           student.sendTryCount < 4
       );
       const response = await fetch("/api/send", {
@@ -38,16 +45,22 @@ function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentDa
       if (response.ok) {
         toastSuccess("Emails enviados");
         const updatedStudents = students.map((student: TableStudentData) => {
-          const emailSentStatus = result.sendedEmailsList.includes(student.email);
+          const emailSentStatus = result.sendedEmailsList.includes(
+            student.email
+          );
           return {
             ...student,
-            reportCardSentStatus: emailSentStatus ? "SENT" : student.reportCardSentStatus,
+            reportCardSentStatus: emailSentStatus
+              ? "SENT"
+              : student.reportCardSentStatus,
           };
         });
 
         setStudents(updatedStudents);
       } else {
-        toastError(result.message || "Erro ao enviar emails. Sou 'sendEmailsButton'.");
+        toastError(
+          result.message || "Erro ao enviar emails. Sou 'sendEmailsButton'."
+        );
       }
     } catch (error) {
       console.error("Erro ao enviar emails:", error);
@@ -81,7 +94,10 @@ function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentDa
         ));
         toastSuccess(`Email enviado para ${student.name}`);
       } else {
-        toastError(result.message || "Erro ao enviar email. Sou 'handleSendIndividualEmail'.");
+        toastError(
+          result.message ||
+            "Erro ao enviar email. Sou 'handleSendIndividualEmail'."
+        );
       }
     } catch (error) {
       console.error("Erro ao enviar email:", error);
@@ -110,7 +126,11 @@ function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentDa
       });
       const result = await response.json();
       if (!response.ok) {
-        toastError(result.message || "Erro ao atualizar email. Sou 'handleEmailChange'.");
+        toastError(
+          result.message || "Erro ao atualizar email. Sou 'handleEmailChange'."
+        );
+      } else {
+        toastSuccess(result.message);
       }
     } catch (error) {
       console.error("Erro ao atualizar email:", error);
@@ -136,7 +156,6 @@ function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentDa
     setEditingEmail(null);
   };
 
-
   const cancelEdit = () => {
     setEditingEmail(null);
   };
@@ -152,17 +171,31 @@ function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentDa
               <th className="py-3 px-6 border border-gray-300">Semestre</th>
               <th className="py-3 px-6 border border-gray-300">Email</th>
               <th className="py-3 px-6 border border-gray-300">Ver Boletim</th>
-              <th className="py-3 px-6 border border-gray-300">Email Send Status</th>
-              <th className="py-3 px-6 border border-gray-300">Envio Individual</th>
-
+              <th className="py-3 px-6 border border-gray-300">
+                Email Send Status
+              </th>
+              <th className="py-3 px-6 border border-gray-300">
+                Envio Individual
+              </th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
             {students.map((student: TableStudentData, index) => (
-              <tr key={student.id} className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100`}>
-                <td className="py-3 px-6 border border-gray-300">{student.name}</td>
-                <td className="py-3 px-6 border border-gray-300">{student.course}</td>
-                <td className="py-3 px-6 border border-gray-300">{student.semester}</td>
+              <tr
+                key={student.id}
+                className={`${
+                  index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                } hover:bg-gray-100`}
+              >
+                <td className="py-3 px-6 border border-gray-300">
+                  {student.name}
+                </td>
+                <td className="py-3 px-6 border border-gray-300">
+                  {student.course}
+                </td>
+                <td className="py-3 px-6 border border-gray-300">
+                  {student.semester}
+                </td>
                 <td className="py-3 px-6 border border-gray-300">
                   {editingEmail === student.id ? (
                     <div className="flex items-center">
@@ -172,15 +205,23 @@ function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentDa
                         onChange={(e) => setEmailValue(e.target.value)}
                         className="border border-gray-300 p-2 mr-5"
                       />
-                      <FaCheck onClick={() => confirmEdit(student)} className="cursor-pointer text-green-600 text-xl mx-3" />
-                      <FaTimes onClick={cancelEdit} className="cursor-pointer text-red-600 text-xl" />
+                      <FaCheck
+                        onClick={() => confirmEdit(student)}
+                        className="cursor-pointer text-green-600 text-xl mx-3"
+                      />
+                      <FaTimes
+                        onClick={cancelEdit}
+                        className="cursor-pointer text-red-600 text-xl"
+                      />
                     </div>
                   ) : (
                     <div className="flex items-center justify-between">
                       <span className="px-4">{student.email}</span>
-                      {student.reportCardSentStatus === "SENT" || student.reportCardSentStatus && (
+                      {student.reportCardSentStatus && (
                         <FaEdit
-                          onClick={() => startEditing(student.id, student.email)}
+                          onClick={() =>
+                            startEditing(student.id, student.email)
+                          }
                           className="cursor-pointer text-xl ml-2 text-blue-600"
                         />
                       )}
@@ -191,10 +232,25 @@ function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentDa
                   onClick={() => handleViewReportCard(student)}
                   className="flex justify-center items-center border py-2 border-gray-300 border-b-0 cursor-pointer"
                 >
-                  <Image src="/static/img/pdf.png" alt="Visualizar Boletim" title="Visualizar Boletim" width={40} height={50} />
+                  <Image
+                    src="/static/img/pdf.png"
+                    alt="Visualizar Boletim"
+                    title="Visualizar Boletim"
+                    width={40}
+                    height={50}
+                  />
                 </td>
-                <td className={`py-3 px-6 border border-gray-300 ${student.reportCardSentStatus === "SENT" ? "text-green-600" : "text-red-600"}`}>
-                  {student.sendTryCount < 4 ? student.reportCardSentStatus : "Tentativas excedidas"}
+                <td
+                  className={`py-3 px-6 border border-gray-300 ${
+                    student.reportCardSentStatus === "SENT" &&
+                    student.sendTryCount < 4
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {student.sendTryCount < 4
+                    ? student.reportCardSentStatus
+                    : "Tentativas excedidas"}
                 </td>
                 <td className="py-3 px-6 border border-gray-300">
                   <button
@@ -214,7 +270,11 @@ function SendEmailsButton({ initialStudents }: { initialStudents: TableStudentDa
         <button
           onClick={handleSendEmails}
           disabled={isSending}
-          className={`px-6 py-3 rounded-md text-white ${isSending ? "bg-gray-400 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"} shadow-lg border border-gray-300`}
+          className={`px-6 py-3 rounded-md text-white ${
+            isSending
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-orange-500 hover:bg-orange-600"
+          } shadow-lg border border-gray-300`}
         >
           {isSending ? "Enviando emails..." : "Enviar emails para todos"}
         </button>
