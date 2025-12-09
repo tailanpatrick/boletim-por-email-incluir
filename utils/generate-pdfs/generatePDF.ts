@@ -12,7 +12,7 @@ async function generatePDF(studentId: string): Promise<Buffer> {
     height: 1120,
   });
 
-  const url = `http://localhost:3000/report/${studentId}`;
+  const url = `http://localhost:${process.env.PORT}/report/${studentId}`;
 
   await page.goto(url, { waitUntil: "networkidle2", timeout: 90000 });
 
